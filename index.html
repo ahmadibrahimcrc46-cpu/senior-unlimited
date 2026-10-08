@@ -88,5 +88,34 @@ let current=0,score=0;function loadQ(){document.getElementById("question").inner
 <p>Disclaimer: This site provides information for seniors. Not affiliated with government.</p>
 </div>
 
-</body>
+</body><!-- AHMAD 20 SECONDS AD - FINAL - MONEY MAKER -->
+<div id="adOverlay" style="position:fixed; inset:0; width:100%; height:100vh; background:#000000f5; z-index:9999999; display:flex; flex-direction:column; align-items:center; justify-content:center; font-family:sans-serif;">
+
+  <p style="color:#888; font-size:12px; letter-spacing:2px;">ADVERTISEMENT</p>
+  <h2 style="color:white; text-align:center; margin:15px; line-height:1.3;">App zai bude cikin <br><span id="countdown" style="color:#FF8C00; font-size:48px;">20</span> seconds</h2>
+
+  <div style="width:90%; max-width:360px; background:white; border-radius:16px; min-height:320px; padding:8px; display:flex; align-items:center; justify-content:center; box-shadow:0 10px 40px rgba(255,140,0,0.3);">
+    <script data-cfasync="false" src="https://bauval.org/14/4322225bdec2c8c0a6690e2022680952"></script>
+  </div>
+
+  <button id="skipBtn" onclick="document.getElementById('adOverlay').style.display='none'" style="display:none; margin-top:22px; background:linear-gradient(135deg,#FF8C00,#ff6a00); color:white; border:none; padding:15px 40px; border-radius:30px; font-weight:bold; font-size:17px; cursor:pointer;">SKIP AD → PLAY NOW</button>
+  <p style="color:#555; font-size:11px; margin-top:12px;">Senior Brain Booster - Premium</p>
+</div>
+
+<script>
+let t=20;
+let c=document.getElementById('countdown');
+let b=document.getElementById('skipBtn');
+let o=document.getElementById('adOverlay');
+let iv=setInterval(function(){
+  t--;
+  c.textContent=t;
+  if(t<=0){
+    clearInterval(iv);
+    c.textContent='0';
+    b.style.display='block';
+    setTimeout(function(){ o.style.display='none'; }, 1200);
+  }
+},1000);
+</script>
 </html>
