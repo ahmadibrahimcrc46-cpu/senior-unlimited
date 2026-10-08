@@ -1,1 +1,105 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="theme-color" content="#1aad19"><title>All Football</title><style>*{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial}body{background:#f0f2f5;color:#111;padding-bottom:62px}.hdr{background:#1aad19;height:54px;display:flex;align-items:center;justify-content:space-between;padding:0 12px;color:#fff;position:sticky;top:0;z-index:100}.hdr h1{font-size:18px;font-weight:800}.avatar{width:30px;height:30px;border-radius:50%;background:#fff}.top-tabs,.sub-tabs{background:#fff;display:flex;overflow-x:auto;white-space:nowrap;border-bottom:1px solid #eee;position:sticky;z-index:90}.top-tabs{top:54px}.sub-tabs{top:92px;background:#fafafa}.top-tabs::-webkit-scrollbar,.sub-tabs::-webkit-scrollbar{display:none}.top-tabs button,.sub-tabs button{border:none;background:none;padding:10px 14px;font-size:14px;color:#666;flex-shrink:0}.top-tabs button.active{color:#1aad19;border-bottom:2.5px solid #1aad19;font-weight:600}.sub-tabs button.active{background:#2d2f33;color:#fff;border-radius:4px;margin:4px}.dark-bar{background:#2d2f33;color:#aaa;display:flex;align-items:center;padding:6px 8px;gap:8px;font-size:13px;overflow-x:auto}.dark-bar button{border:none;background:transparent;color:#aaa;padding:6px 12px;border-radius:4px}.dark-bar button.active{background:#000;color:#fff}.pill{border:1px solid #ddd;border-radius:16px;padding:4px 10px;background:#fff}.section{background:#fff;margin-bottom:8px}.sh{padding:11px 12px;font-weight:700;display:flex;gap:6px;align-items:center}.sh .sub{font-weight:400;color:#888;font-size:12px}.news{display:flex;gap:10px;padding:10px 12px;border-bottom:1px solid #f0f0f0}.news img{width:92px;height:62px;object-fit:cover;border-radius:4px;background:#ddd;flex-shrink:0}.news .t{font-size:14px;line-height:17px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}.meta{display:flex;justify-content:space-between;margin-top:5px;font-size:12px}.cmt{color:#1aad19}.fire{color:#ff8a00}.more{color:#1aad19;text-align:center;padding:10px;font-size:14px}.date{color:#1aad19;background:#f5f5f5;text-align:center;padding:7px;font-size:12px}.match-group{background:#fff;margin-bottom:8px}.mh{padding:8px 12px;font-size:13px;font-weight:600;display:flex;justify-content:space-between;background:#f9f9f9;border-bottom:1px solid #eee}.mrow{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border-bottom:1px solid #f5f5f5;font-size:13px}.mrow .left{display:flex;align-items:center;gap:8px}.bell{color:#888}.stats-wrap{background:#1a4d2e;color:#fff}.stats-wrap.dark2{background:#2b2f33}.row{display:flex;align-items:center;padding:8px 10px;border-bottom:1px solid rgba(255,255,255,.06);font-size:13px}.row .pos{width:30px}.row .club{flex:1;display:flex;align-items:center;gap:6px;white-space:nowrap;overflow:hidden}.row .nm{flex:1;display:flex;gap:10px;justify-content:flex-end;opacity:.9}.row.header{font-size:11px;opacity:.6}.btm{position:fixed;bottom:0;left:0;right:0;height:60px;background:#fff;border-top:1px solid #ddd;display:flex;z-index:200}.b{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:10px;color:#888}.b.active{color:#1aad19}.b img{width:26px;height:26px}.hidden{display:none}.note{padding:10px;font-size:11px;line-height:14px;color:#999;background:#2b2f33}</style></head><body><div class="hdr"><div class="avatar"></div><h1 id="hdrTitle">All Football</h1><div>🔍</div></div><div id="page-news"><div class="top-tabs" id="newsTabs"><button class="active" data-p="headline">Headline</button><button data-p="worldcup">World Cup</button><button data-p="hot">Hot</button><button data-p="local">Local</button><button data-p="official">Official</button><button data-p="transfers">Transfers</button><button data-p="epl">EPL</button><button data-p="laliga">La Liga</button></div><div id="headline" class="tab"><div class="section"><div class="sh">🔥 Trending <span class="sub">24h Top News</span></div><div class="news"><img src="https://images.unsplash.com/photo-1579952363873-27f3bfad9c0d?w=200"><div><div class="t">Messi accused of racism after declining selfie with Benin player during farewell match</div><div class="meta"><span class="fire">🔥🔥🔥</span><span class="cmt">350 💬</span></div></div></div><div class="news"><img src="https://images.unsplash.com/photo-1543351611-58f69d7c1781?w=200"><div><div class="t">Lionel Messi ends Argentina career with goal and two assists against Benin on emotional ni...</div><div class="meta"><span class="fire">🔥🔥🔥</span><span class="cmt">85 💬</span></div></div></div><div class="news"><img src="https://images.unsplash.com/photo-1522778119026-d647f059
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#1aad19">
+<title>Senior Unlimited - All Football Clone</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial}
+body{background:#f2f2f2}
+.app-header{background:#1aad19;height:52px;display:flex;align-items:center;justify-content:center;position:sticky;top:0;z-index:50;color:#fff;font-weight:700;font-size:18px}
+.app-header .avatar{position:absolute;left:12px;width:34px;height:34px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px}
+.sub-tabs{background:#fff;display:flex;overflow:auto;border-bottom:1px solid #eee;position:sticky;top:52px;z-index:40}
+.sub-tabs button{border:0;background:0;padding:10px 14px;white-space:nowrap;color:#666;font-size:14.5px}
+.sub-tabs button.active{color:#1aad19;border-bottom:2px solid #1aad19;font-weight:600}
+.date-bar{background:#e8e8e8;text-align:center;padding:6px;color:#888;font-size:13px}
+.match-group{background:#fff;margin-bottom:1px}
+.comp-row{display:flex;justify-content:space-between;align-items:center;padding:6px 10px}
+.comp-name{font-size:11px;color:#888}
+.time-badge{background:#ececec;border-radius:12px;padding:2px 10px;font-size:12px;font-weight:600}
+.match-row{display:flex;align-items:center;justify-content:space-between;padding:8px 12px}
+.team{flex:1;display:flex;align-items:center;gap:8px;font-size:14px;font-weight:500}
+.team.right{justify-content:flex-end}
+.team img{width:26px;height:26px;object-fit:contain}
+.vs-score{background:#eee;border-radius:4px;padding:3px 10px;font-weight:700;font-size:14px;min-width:54px;text-align:center}
+.bell{color:#999;font-size:18px}
+.odds{display:flex;gap:6px;padding:0 12px 8px;justify-content:center}
+.odds span{background:#f7f7f7;border-radius:12px;padding:3px 8px;font-size:11px;color:#333;border:1px solid #eee;display:flex;gap:4px}
+.odds .bet{background:#eee;font-size:10px;color:#666}
+.refresh{position:fixed;right:12px;bottom:84px;width:44px;height:44px;background:#1aad19;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:22px;box-shadow:0 2px 8px rgba(0,0,0,.2);z-index:60}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;height:62px;background:#fff;border-top:1px solid #e5e5e5;display:flex;justify-content:space-around;align-items:center;z-index:100}
+.bn{flex:1;display:flex;flex-direction:column;align-items:center;font-size:10px;color:#888;gap:2px}
+.bn.active{color:#1aad19}
+.bn .ic{font-size:22px}
+.bn img{width:30px;height:30px}
+.tab{display:none;padding-bottom:70px}
+.tab.active{display:block}
+.stats-header{background:#1aad19;color:#fff;padding:0 12px;display:flex;gap:20px;height:36px;align-items:center;font-size:15px;position:sticky;top:52px;z-index:45}
+.stats-header .active{font-weight:700}
+.league-tabs{background:#fff;display:flex;overflow:auto;padding:0 8px;gap:16px;border-bottom:1px solid #eee}
+.league-tabs button{border:0;background:0;padding:10px 2px;color:#333;font-size:14px;white-space:nowrap}
+.league-tabs button.active{color:#1aad19;border-bottom:2px solid #1aad19}
+.filter-row{background:#2f3640;color:#fff;display:flex;align-items:center;gap:8px;padding:6px 8px;overflow:auto}
+.filter-row select{background:transparent;color:#fff;border:0;font-size:13px}
+.filter-row .chips{display:flex;gap:6px}
+.chip{background:#3f4753;padding:5px 12px;border-radius:4px;font-size:13px;color:#aaa}
+.chip.active{background:#1e242e;color:#fff}
+.table{background:#2f3640;color:#fff}
+.thead{display:flex;padding:8px 8px;font-size:12px;color:#8a919a;border-bottom:1px solid #3a424f}
+.thead span:first-child{flex:1}
+.trow{display:flex;align-items:center;padding:8px 8px;font-size:13px;border-bottom:1px solid #3a424f}
+.trow.green{background:#1aad19}
+.trow.darkgreen{background:#1e6b3a}
+.team-cell{flex:1;display:flex;gap:6px;align-items:center;white-space:nowrap;overflow:hidden}
+.team-cell img{width:20px;height:20px}
+.cols{display:flex;gap:12px;min-width:200px;justify-content:space-between}
+.cols span{width:18px;text-align:center}
+.rules{padding:10px;color:#8a919a;font-size:11px;line-height:15px;background:#2f3640}
+</style>
+</head>
+<body>
+<div class="app-header"><div class="avatar">👤</div><div id="headerTitle">MATCH</div></div>
+
+<div id="tab-news" class="tab">
+  <div class="sub-tabs"><button class="active">Headline</button><button>World Cup</button><button>Hot</button><button>Local</button><button>Official</button></div>
+  <div class="date-bar">Trending 24h Top News</div>
+  <div class="match-group"><div style="padding:12px;display:flex;gap:10px"><img src="https://images.unsplash.com/photo-1579952363873-27f3bfad9c0d?w=120" style="width:90px;height:60px;border-radius:4px"><div style="font-size:14px">Messi accused of racism after declining selfie with Benin player<br><span style="color:#ff8a00">🔥🔥🔥</span> <span style="color:#1aad19;float:right">350 💬</span></div></div></div>
+</div>
+
+<div id="tab-match" class="tab active">
+  <div class="sub-tabs"><button class="active">Main</button><button>Subscribe</button><button>Nigeria PFL</button><button>Global</button><button>Local</button></div>
+  <div class="date-bar">Yesterday, 7 Oct 2026</div>
+  <div class="match-group"><div class="comp-row"><span class="comp-name">Nigeria PFL R3</span></div><div class="match-row"><div class="team">Shooting Stars...</div><div class="vs-score">0 - 0</div><div class="team right">Kano Pillars</div></div></div>
+  <div class="date-bar">Tomorrow, 9 Oct 2026</div>
+  <div class="match-group"><div class="comp-row"><span class="comp-name">Saudi PL R8</span><span class="time-badge">15:55</span></div><div class="match-row"><div class="team">Al Fateh</div><div class="bell">🔔</div><div class="team right">Al-Ahli SFC</div></div><div class="odds"><span>1 <b>5.75</b></span><span>x <b>4.20</b></span><span>2 <b>1.42</b></span><span class="bet">betway > 18+ | ad</span></div></div>
+  <div class="match-group"><div class="comp-row"><span class="comp-name">Bundesliga R5</span><span class="time-badge">14:30</span></div><div class="match-row"><div class="team">Hoffenheim</div><div class="bell">🔔</div><div class="team right">Hamburg</div></div><div class="odds"><span>1 <b>1.42</b></span><span>x <b>5.00</b></span><span>2 <b>7.00</b></span><span class="bet">betway > 18+ | ad</span></div></div>
+  <div class="match-group"><div class="comp-row"><span class="comp-name">Bundesliga R5</span><span class="time-badge">14:30</span></div><div class="match-row"><div class="team">Mainz</div><div class="bell">🔔</div><div class="team right">Leverkusen</div></div><div class="odds"><span>1 <b>3.00</b></span><span>x <b>3.80</b></span><span>2 <b>2.20</b></span><span class="bet">betway > 18+ | ad</span></div></div>
+  <div class="date-bar">Sat, 10 Oct 2026</div>
+  <div class="match-group"><div class="comp-row"><span class="comp-name">EPL R6</span><span class="time-badge">12:30</span></div><div class="match-row"><div class="team">Arsenal 🔴</div><div class="bell">🔔</div><div class="team right">Leeds United</div></div><div class="odds"><span>1 <b>1.40</b></span><span>x <b>5.25</b></span><span>2 <b>7.50</b></span><span class="bet">betway > 18+ | ad</span></div></div>
+</div>
+
+<div id="tab-stats" class="tab">
+  <div class="stats-header"><span class="active">Hot</span><span>Competitions</span><span>Ranking</span></div>
+  <div class="league-tabs" id="leagueTabs"><button class="active" data-league="npfl">Nigeria PFL</button><button data-league="epl">EPL</button><button data-league="laliga">La Liga</button><button data-league="ucl">Champions Leagi</button></div>
+  <div class="filter-row"><span>26/27 ✓</span><div class="chips"><span class="chip active">Tables</span><span class="chip">Players</span><span class="chip">Teams</span><span class="chip">Fixtures</span></div></div>
+  <div id="npfl" class="league">
+    <div class="table">
+      <div class="thead"><span>Team</span><span class="cols"><span>P</span><span>W</span><span>D</span><span>L</span><span>F/A</span><span>Pts</span></span></div>
+      <div class="trow green"><div class="team-cell">1 🟢 Enugu Rangers</div><div class="cols"><span>7</span><span>5</span><span>1</span><span>1</span><span>12/7</span><span>16</span></div></div>
+      <div class="trow green"><div class="team-cell">2 ⚪ Rivers United</div><div class="cols"><span>7</span><span>4</span><span>3</span><span>0</span><span>13/2</span><span>15</span></div></div>
+      <div class="trow darkgreen"><div class="team-cell">3 🔵 Doma United</div><div class="cols"><span>7</span><span>4</span><span>1</span><span>2</span><span>10/8</span><span>13</span></div></div>
+      <div class="trow"><div class="team-cell">4 🔵 Barau FC</div><div class="cols"><span>7</span><span>3</span><span>3</span><span>1</span><span>10/7</span><span>12</span></div></div>
+      <div class="trow"><div class="team-cell">5 🟡 Bendel Insurance</div><div class="cols"><span>7</span><span>4</span><span>0</span><span>3</span><span>13/11</span><span>12</span></div></div>
+      <div class="trow"><div class="team-cell">6 🟢 Kano Pillars</div><div class="cols"><span>7</span><span>2</span><span>5</span><span>0</span><span>11/7</span><span>11</span></div></div>
+      <div class="trow"><div class="team-cell">7 🟢 Plateau United</div><div class="cols"><span>7</span><span>3</span><span>2</span><span>2</span><span>9/8</span><span>11</span></div></div>
+      <div class="trow"><div class="team-cell">8 ⚽ Kwara United</div><div class="cols"><span>7</span><span>3</span><span>1</span><span>3</span><span>9/7</span><span>10</span></div></div>
+      <div class="trow"><div class="team-cell">9 🟡 Ikorodu City FC</div><div class="cols"><span>7</span><span>2</span><span>3</span><span>2</span><span>8/7</span><span>9</span></div></div>
+      <div class="trow"><div class="team-cell">10 🔵 Sporting Lagos</div><div class="cols"><span>7</span><span>2</span><span>3</span><span>2</span><span>8/8</span><span>9</span></div></div>
+      <div class="trow"><div class="team-cell">11 🟢 Katsina United</div><div class="cols"><span>7</span><span>2</span><span>3</span><span>2</span><span>6/9</span><span>9</span></div></div>
+      <div class="trow"><div class="team-cell">12 🔵 Niger Tornadoes FC</div><div class="cols"><span>7</span><span>2</span><span>2</span><span>3</span><span>6/7</span><span>8</span></div></div>
+    </div>
+  </div>
+  <div id="epl" class="league" style="display:none"><div class="table"><div class="thead"><span>Team</span><span class="cols"><span>P</span><span>W</span><span>D</span><span>L</span><span>F/A</span><span>Pts</span></span></div><div class="trow green"><div class="team-cell">1 🔵 Man City</div><div class="cols"><span>5</span><span>5</span><span>0</span><span>0</span><span>13/5</span><span>15</span></div></div><div class="trow green"><div class="team-cell">2 🔴 Arsenal</div><div class="cols"><span>5</span><span>4</span><span>0</span><span>1</span><span>8/4</span><span>12</span></div></div></div></div>
+  <div id="laliga" class="league" style="display
