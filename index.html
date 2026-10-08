@@ -1,11 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ha">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#0eb052">
-<title>Senior Unlimited LIVE</title>
+<title>Senior Unlimited LIVE - Hausa</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,Roboto,Arial}
 body{background:#121212;color:#fff;padding-bottom:70px}
@@ -23,119 +22,37 @@ body{background:#121212;color:#fff;padding-bottom:70px}
 .team{font-size:15px;font-weight:600;flex:1}
 .score{background:#121212;padding:6px 14px;border-radius:6px;font-weight:800;min-width:56px;text-align:center;border:1px solid #333}
 .bottom{position:fixed;bottom:0;left:0;right:0;height:66px;background:#1a1a1a;border-top:1px solid #222;display:flex;align-items:center;justify-content:space-around;z-index:999}
-.bn{color:#777;font-size:11px;display:flex;flex-direction:column;align-items:center;gap:3px;flex:1;cursor:pointer;padding:8px 0}
+.bn{color:#777;font-size:11px;display:flex;flex-direction:column;align-items:center;gap:3px;flex:1;padding:8px 0}
 .bn.active{color:#0eb052}
 .page{padding-bottom:10px}
 .hidden{display:none!important}
-.profile-head{background:#1e1e1e;margin:12px;border-radius:12px;padding:18px;text-align:center}
-.avatar{width:64px;height:64px;background:#0eb052;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 10px}
-.list-item{background:#1e1e1e;margin:8px 12px;padding:14px;border-radius:12px;display:flex;justify-content:space-between;align-items:center}
+.list-item{background:#1e1e1e;margin:8px 12px;padding:14px;border-radius:12px;display:flex;justify-content:space-between}
 .league-item{background:#1e1e1e;margin:8px 12px;padding:14px;border-radius:12px;display:flex;gap:10px;align-items:center}
 .news-box{background:#1e1e1e;margin:8px 12px;padding:12px;border-radius:12px;display:flex;gap:10px}
-.news-box img{width:80px;height:56px;border-radius:6px;object-fit:cover;background:#333}
+.news-box img{width:80px;height:56px;border-radius:6px;background:#333;object-fit:cover}
 </style>
 </head>
 <body>
-<div class="header"><h1>⚽ Senior Unlimited LIVE</h1><div class="live-badge"><span class="live-dot"></span><span id="lc">AUTO LIVE</span></div></div>
+<div class="header"><h1>⚽ Senior Unlimited LIVE</h1><div class="live-badge"><span class="live-dot"></span><span id="lc">LIVE AUTO</span></div></div>
 
-<div class="filters" id="filtersBox">
-<button class="active" data-l="all">All</button>
-<button data-l="Premier">Premier League</button>
+<div class="filters" id="fBox">
+<button class="active" data-l="all">Duka</button>
+<button data-l="Premier">Firimiya</button>
 <button data-l="LaLiga">LaLiga</button>
-<button data-l="UCL">UCL</button>
-<button data-l="Nigeria">Nigeria</button>
+<button data-l="UCL">Zakarun Turai</button>
+<button data-l="Nigeria">Nijeriya</button>
 </div>
 
-<div id="p-match" class="page">
-<div id="matches">Ana jawo LIVE... ⏳</div>
+<div id="p-wasanni" class="page"><div id="matches">Ana jawo wasanni daga Turai... ⏳</div></div>
+
+<div id="p-gasar" class="page hidden">
+<div class="league-item">🏴󠁧󠁢󠁥󠁮󠁧󠁿 Firimiyar Ingila <span style="margin-left:auto">▶</span></div>
+<div class="league-item">🇪🇸 LaLiga - Sifen <span style="margin-left:auto">▶</span></div>
+<div class="league-item">🇪🇺 Zakarun Turai (UCL) <span style="margin-left:auto">▶</span></div>
+<div class="league-item">🇳🇬 NPFL - Nijeriya <span style="margin-left:auto">▶</span></div>
+<div class="league-item">🌍 AFCON - Afrika <span style="margin-left:auto">▶</span></div>
 </div>
 
-<div id="p-leagues" class="page hidden">
-<div onclick="alert('Premier League - Yana aiki!')" class="league-item">🏴󠁧󠁢󠁥󠁮󠁧󠁿 Premier League <span style="margin-left:auto;color:#0eb052">▶</span></div>
-<div onclick="alert('LaLiga - Yana aiki!')" class="league-item">🇪🇸 LaLiga <span style="margin-left:auto;color:#0eb052">▶</span></div>
-<div onclick="alert('Bundesliga - Yana aiki!')" class="league-item">🇩🇪 Bundesliga <span style="margin-left:auto;color:#0eb052">▶</span></div>
-<div onclick="alert('Serie A - Yana aiki!')" class="league-item">🇮🇹 Serie A <span style="margin-left:auto;color:#0eb052">▶</span></div>
-<div onclick="alert('UCL - Yana aiki!')" class="league-item">🇪🇺 Champions League <span style="margin-left:auto;color:#0eb052">▶</span></div>
-<div onclick="alert('Nigeria PFL - Yana aiki!')" class="league-item">🇳🇬 Nigeria PFL <span style="margin-left:auto;color:#0eb052">▶</span></div>
-<div onclick="alert('AFCON - Yana aiki!')" class="league-item">🌍 AFCON <span style="margin-left:auto;color:#0eb052">▶</span></div>
-</div>
-
-<div id="p-news" class="page hidden">
-<div class="news-box"><img src="https://images.unsplash.com/photo-1579952363873-27f3bfad9c0d?w=200"><div><div style="font-size:13px">Messi ends Argentina career with goal vs Benin</div><div style="font-size:11px;color:#888;margin-top:4px">Trending • 350 💬</div></div></div>
-<div class="news-box"><img src="https://images.unsplash.com/photo-1517466787929-bc90951d0974?w=200"><div><div style="font-size:13px">Quansah could leave Leverkusen amid Liverpool interest</div><div style="font-size:11px;color:#888;margin-top:4px">Transfers • 7 💬</div></div></div>
-</div>
-
-<div id="p-me" class="page hidden">
-<div class="profile-head">
-<div class="avatar">👤</div>
-<div style="font-weight:700;font-size:16px">Ahmad Ibrahim</div>
-<div style="color:#888;font-size:12px;margin-top:4px">Senior Unlimited LIVE • Ibadan</div>
-<div style="margin-top:10px;background:#0eb052;display:inline-block;padding:6px 14px;border-radius:20px;font-size:12px">✅ AUTO LIVE Active</div>
-</div>
-<div class="list-item">⭐ My Favorites <span>▶</span></div>
-<div class="list-item">🔔 Notifications <span style="color:#0eb052">ON</span></div>
-<div class="list-item">⚙️ Settings <span>▶</span></div>
-<div class="list-item">📤 Share App <span>▶</span></div>
-</div>
-
-<div class="bottom">
-<div class="bn active" id="bn-match"><span style="font-size:20px">⚽</span>Matches</div>
-<div class="bn" id="bn-leagues"><span style="font-size:20px">🏆</span>Leagues</div>
-<div class="bn" id="bn-news"><span style="font-size:20px">📰</span>News</div>
-<div class="bn" id="bn-me"><span style="font-size:20px">👤</span>Me</div>
-</div>
-
-<script>
-function showPage(page){
- document.querySelectorAll('.page').forEach(p=>p.classList.add('hidden'));
- document.querySelectorAll('.bn').forEach(b=>b.classList.remove('active'));
- document.getElementById('p-'+page).classList.remove('hidden');
- document.getElementById('bn-'+page).classList.add('active');
- document.getElementById('filtersBox').style.display = page==='match'? 'flex' : 'none';
- localStorage.setItem('senior_page', page);
- window.scrollTo(0,0);
-}
-
-// FIX: Add click listeners properly
-document.getElementById('bn-match').addEventListener('click', ()=>showPage('match'));
-document.getElementById('bn-leagues').addEventListener('click', ()=>showPage('leagues'));
-document.getElementById('bn-news').addEventListener('click', ()=>showPage('news'));
-document.getElementById('bn-me').addEventListener('click', ()=>showPage('me'));
-
-const last = localStorage.getItem('senior_page') || 'match';
-showPage(last);
-
-async function loadAuto(){
- const box=document.getElementById('matches');
- let html=""; let live=0;
- const leagues=[
-  {url:"https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/scoreboard", name:"Premier League"},
-  {url:"https://site.api.espn.com/apis/site/v2/sports/soccer/esp.1/scoreboard", name:"LaLiga"},
-  {url:"https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.champions/scoreboard", name:"UCL"}
- ];
- for(const lg of leagues){
-  try{
-   const r=await fetch(lg.url); const d=await r.json();
-   if(d.events && d.events.length){
-    d.events.forEach(ev=>{
-     const s=ev.competitions[0];
-     const home=s.competitors[0].team.displayName;
-     const away=s.competitors[1].team.displayName;
-     const hs=s.competitors[0].score||"0";
-     const as=s.competitors[1].score||"0";
-     const st=ev.status.type.detail;
-     const isLive=ev.status.type.state==='in'; if(isLive) live++;
-     html+=`<div class="card" data-l="${lg.name}"><div class="card-top"><span>${lg.name}</span><span style="color:${isLive?'#ff4d4d':'#888'}">${st}</span></div><div class="card-main"><div class="team">${home}</div><div class="score">${hs}-${as}</div><div class="team" style="text-align:right">${away}</div></div></div>`;
-    });
-   }
-  }catch(e){}
- }
- if(html===""){
-  html=`
-  <div class="card" data-l="Premier League"><div class="card-top"><span>Premier League</span><span style="color:#ff4d4d">78' LIVE</span></div><div class="card-main"><div class="team">Man City</div><div class="score">2-1</div><div class="team" style="text-align:right">Arsenal</div></div></div>
-  <div class="card" data-l="LaLiga"><div class="card-top"><span>LaLiga</span><span style="color:#ff4d4d">62' LIVE</span></div><div class="card-main"><div class="team">Real Madrid</div><div class="score">1-1</div><div class="team" style="text-align:right">Barcelona</div></div></div>
-  <div class="card" data-l="Nigeria"><div class="card-top"><span>Nigeria PFL</span><span style="color:#ff4d4d">55' LIVE</span></div><div class="card-main"><div class="team">Enugu Rangers</div><div class="score">2-0</div><div class="team" style="text-align:right">Kano Pillars</div></div></div>`;
-  live=3;
- }
- box.innerHTML=html;
- document.getElementById('lc').
+<div id="p-labarai" class="page hidden">
+<div class="news-box"><img src="https://images.unsplash.com/photo-1579952363873-27f3bfad9c0d?w=200"><div><div style="font-size:13px">Messi ya kare rayuwarsa da Argentina da kwallo a raga</div><div style="font-size:11px;color:#888;margin-top:4px">Ana ta yadawa • 350 💬</div></div></div>
+<div class="news-box"><img src="https://images.unsplash.com/photo-1517466787929-bc90951d0974?w=200"><div><div style="font-size:13px">Quansah na
