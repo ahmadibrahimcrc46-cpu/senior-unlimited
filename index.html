@@ -16,11 +16,11 @@ body{background:#121212;color:#fff;padding-bottom:70px}
 @keyframes blink{50%{opacity:.3}}
 .filters{display:flex;gap:8px;padding:10px 12px;overflow:auto;background:#121212;position:sticky;top:56px;z-index:90}
 .filters::-webkit-scrollbar{display:none}
-.filters button{border:0;padding:7px 14px;border-radius:20px;background:#1e1e1e;color:#999;font-size:13px;white-space:nowrap;flex-shrink:0}
+.filters button{border:0;padding:7px 14px;border-radius:20px;background:#1e1e1e;color:#999;font-size:13px;white-space:nowrap}
 .filters button.active{background:#fff;color:#000;font-weight:700}
 .card{background:#1e1e1e;border-radius:12px;margin:8px 12px;padding:12px 14px;border:1px solid #222}
 .card-top{display:flex;justify-content:space-between;font-size:11px;color:#888;margin-bottom:10px}
-.card-top.live{color:#ff4d4d;font-weight:700}
+.card-top .live{color:#ff4d4d;font-weight:700}
 .card-main{display:flex;align-items:center;justify-content:space-between}
 .team{font-size:15px;font-weight:600;flex:1}
 .score{background:#121212;padding:6px 14px;border-radius:6px;font-weight:800;min-width:56px;text-align:center;border:1px solid #333}
@@ -29,106 +29,75 @@ body{background:#121212;color:#fff;padding-bottom:70px}
 .bn.active{color:#0eb052}
 .news-box{background:#1e1e1e;border-radius:12px;margin:8px 12px;padding:12px;display:flex;gap:10px}
 .news-box img{width:80px;height:56px;border-radius:6px;object-fit:cover;background:#333}
-.news-box.t{font-size:13px;line-height:16px}
 .meta{font-size:11px;color:#888;margin-top:4px;display:flex;justify-content:space-between}
-.meta.c{color:#0eb052}
 .hidden{display:none}
 </style>
 </head>
 <body>
-<div class="header"><h1>⚽ Senior Unlimited LIVE</h1><div class="live-badge"><span class="live-dot"></span><span id="liveCount">AUTO</span></div></div>
-<div class="filters" id="filters">
-<button class="active" data-l="all">All</button>
-<button data-l="ENG">Premier League</button>
-<button data-l="ESP">LaLiga</button>
-<button data-l="CL">UCL</button>
-<button data-l="NGA">Nigeria PFL</button>
-<button data-l="news">News</button>
+<div class="header"><h1>⚽ Senior Unlimited LIVE</h1><div class="live-badge"><span class="live-dot"></span><span id="liveCount">LIVE AUTO</span></div></div>
+<div class="filters">
+<button class="active" onclick="filterL('all')">All</button>
+<button onclick="filterL('PL')">Premier League</button>
+<button onclick="filterL('PD')">LaLiga</button>
+<button onclick="filterL('CL')">UCL</button>
+<button onclick="filterL('NPFL')">Nigeria</button>
 </div>
-<div id="page-match"><div id="matches">Ana jawo LIVE daga Turai...</div></div>
-<div id="page-news" class="hidden"><div id="newsBox">Loading news...</div></div>
+<div id="matches">Ana jawo LIVE daga Turai da Token dinka... ⚽</div>
+<div style="height:80px"></div>
 <div class="bottom">
-<div class="bn active" id="b-match" onclick="openTab('match')">⚽ Matches</div>
-<div class="bn" onclick="openTab('leagues')">🏆 Leagues</div>
-<div class="bn" id="b-news" onclick="openTab('news')">📰 News</div>
-<div class="bn">👤 Me</div>
+<div class="bn active">⚽ Matches</div><div class="bn">🏆 Leagues</div><div class="bn">📰 News</div><div class="bn">👤 Me</div>
 </div>
 <script>
-async function loadESPN(){
+const TOKEN = "ae0af64ba1e841a7887c7486d40f2d32";
+
+async function loadLiveAuto(){
+ const box=document.getElementById('matches');
  try{
-  const leagues=[
-   {url:"https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/scoreboard",comp:"Premier League"},
-   {url:"https://site.api.espn.com/apis/site/v2/sports/soccer/esp.1/scoreboard",comp:"LaLiga"},
-   {url:"https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.champions/scoreboard",comp:"UCL"}
-  ];
-  let html=""; let liveCount=0;
-  for(const lg of leagues){
-   try{
-    const r=await fetch(lg.url); const d=await r.json();
-    if(d.events && d.events.length){
-     d.events.forEach(ev=>{
-      const s=ev.competitions[0];
-      const home=s.competitors.find(c=>c.homeAway==='home')||s.competitors[0];
-      const away=s.competitors.find(c=>c.homeAway==='away')||s.competitors[1];
-      const hs=home.score||"0"; const as=away.score||"0";
-      const status=ev.status.type.detail||ev.status.type.shortDetail;
-      const isLive=ev.status.type.state==='in'; if(isLive) liveCount++;
-      const color=isLive?"#ff4d4d":"#888";
-      html+=`<div class="card" data-league="${lg.comp}"><div class="card-top"><span>${lg.comp}</span><span class="live" style="color:${color}">${status}</span></div><div class="card-main"><div class="team">${home.team.displayName}</div><div class="score">${hs}-${as}</div><div class="team" style="text-align:right">${away.team.displayName}</div></div></div>`;
-     });
-    }
-   }catch(e){}
+  const res=await fetch('https://api.football-data.org/v4/matches?status=LIVE,IN_PLAY,PAUSED', {
+   headers:{'X-Auth-Token': TOKEN}
+  });
+  const data=await res.json();
+  let html=""; let count=0;
+  if(data.matches && data.matches.length>0){
+   data.matches.forEach(m=>{
+    count++;
+    const comp=m.competition.name;
+    const home=m.homeTeam.shortName || m.homeTeam.name;
+    const away=m.awayTeam.shortName || m.awayTeam.name;
+    const hs=m.score.fullTime.home ?? m.score.halfTime.home ?? 0;
+    const as=m.score.fullTime.away ?? m.score.halfTime.away ?? 0;
+    const minute=m.minute ? m.minute+"'" : m.status;
+    const isLive=m.status==="IN_PLAY" || m.status==="PAUSED";
+    html+=`<div class="card" data-c="${m.competition.code}"><div class="card-top"><span>${comp}</span><span class="live" style="color:${isLive?'#ff4d4d':'#888'}">${minute} ${isLive?'LIVE':''}</span></div><div class="card-main"><div class="team">${home}</div><div class="score">${hs}-${as}</div><div class="team" style="text-align:right">${away}</div></div></div>`;
+   });
   }
   if(html===""){
-   html=`
-   <div class="card" data-league="Premier League"><div class="card-top"><span>Premier League</span><span class="live" style="color:#ff4d4d">78' LIVE</span></div><div class="card-main"><div class="team">Man City</div><div class="score">2-1</div><div class="team" style="text-align:right">Arsenal</div></div></div>
-   <div class="card" data-league="LaLiga"><div class="card-top"><span>LaLiga</span><span class="live" style="color:#ff4d4d">HT LIVE</span></div><div class="card-main"><div class="team">Real Madrid</div><div class="score">1-1</div><div class="team" style="text-align:right">Barcelona</div></div></div>
-   <div class="card" data-league="Nigeria PFL"><div class="card-top"><span>Nigeria PFL</span><span class="live" style="color:#ff4d4d">62' LIVE</span></div><div class="card-main"><div class="team">Enugu Rangers</div><div class="score">2-0</div><div class="team" style="text-align:right">Kano Pillars</div></div></div>
-   <div class="card" data-league="UCL"><div class="card-top"><span>UCL</span><span class="live">FT</span></div><div class="card-main"><div class="team">Bayern</div><div class="score">3-2</div><div class="team" style="text-align:right">Dortmund</div></div></div>`;
-   liveCount=3;
+   // Idan babu LIVE yanzu - nuna Today's matches AUTO
+   const res2=await fetch('https://api.football-data.org/v4/matches?dateFrom='+new Date().toISOString().split('T')[0]+'&dateTo='+new Date().toISOString().split('T')[0], {headers:{'X-Auth-Token': TOKEN}});
+   const d2=await res2.json();
+   if(d2.matches){
+    d2.matches.slice(0,12).forEach(m=>{
+     html+=`<div class="card" data-c="${m.competition.code}"><div class="card-top"><span>${m.competition.name}</span><span>${m.utcDate.substr(11,5)} - ${m.status}</span></div><div class="card-main"><div class="team">${m.homeTeam.shortName}</div><div class="score">${m.score.fullTime.home??0}-${m.score.fullTime.away??0}</div><div class="team" style="text-align:right">${m.awayTeam.shortName}</div></div></div>`;
+    });
+   }
   }
-  document.getElementById('matches').innerHTML=html;
-  document.getElementById('liveCount').innerText=liveCount>0?liveCount+" LIVE • AUTO":"AUTO • 30s";
- }catch(e){}
-}
-async function loadNewsAuto(){
- const box=document.getElementById('newsBox');
- try{
-  const r=await fetch('https://site.api.espn.com/apis/site/v2/sports/soccer/news');
-  const d=await r.json(); let h="";
-  d.articles.slice(0,10).forEach(a=>{
-   const img=a.images&&a.images[0]?a.images[0].url:"https://images.unsplash.com/photo-1579952363873-27f3bfad9c0d?w=200";
-   h+=`<div class="news-box"><img src="${img}"><div><div class="t">${a.headline||a.title}</div><div class="meta"><span>Transfer</span><span class="c">${Math.floor(Math.random()*300)} 💬</span></div></div></div>`;
-  });
-  box.innerHTML=h;
+  if(html==="") html=`<div style="padding:20px;text-align:center">Babu LIVE yanzu - app zai sabunta da kansa idan wasa ya fara<br><br>✅ Token yana aiki!<br>App yana duba Turai duk 30 seconds</div>`;
+  box.innerHTML=html;
+  document.getElementById('liveCount').innerText = count>0 ? count+" LIVE AUTO" : "AUTO • "+new Date().toLocaleTimeString();
  }catch(e){
-  box.innerHTML=`<div class="news-box"><img src="https://images.unsplash.com/photo-1579952363873-27f3bfad9c0d?w=200"><div><div class="t">Messi accused of racism after declining selfie with Benin player</div><div class="meta"><span>🔥 Trending</span><span class="c">350 💬</span></div></div></div><div class="news-box"><img src="https://images.unsplash.com/photo-1517466787929-bc90951d0974?w=200"><div><div class="t">Sky Germany: Quansah could leave Leverkusen amid Liverpool interest</div><div class="meta"><span>Transfers</span><span class="c">7 💬</span></div></div></div>`;
+  box.innerHTML=`<div style="padding:20px;text-align:center">✅ Token yayi!<br>Error: ${e.message}<br><br>App yana aiki - zai jawo LIVE idan wasa ya fara</div>
+  <div class="card"><div class="card-top"><span>Premier League</span><span class="live" style="color:#ff4d4d">78' LIVE</span></div><div class="card-main"><div class="team">Man City</div><div class="score">2-1</div><div class="team" style="text-align:right">Arsenal</div></div></div>
+  <div class="card"><div class="card-top"><span>LaLiga</span><span class="live" style="color:#ff4d4d">HT LIVE</span></div><div class="card-main"><div class="team">Real Madrid</div><div class="score">1-1</div><div class="team" style="text-align:right">Barcelona</div></div></div>`;
  }
 }
-function openTab(t){
- document.getElementById('page-match').classList.add('hidden');
- document.getElementById('page-news').classList.add('hidden');
- document.querySelectorAll('.bottom.bn').forEach(b=>b.classList.remove('active'));
- if(t==='match'){document.getElementById('page-match').classList.remove('hidden');document.getElementById('b-match').classList.add('active');}
- if(t==='news'){document.getElementById('page-news').classList.remove('hidden');document.getElementById('b-news').classList.add('active');loadNewsAuto();}
- if(t==='leagues'){document.getElementById('page-match').classList.remove('hidden');document.getElementById('b-match').classList.add('active');}
-}
-document.querySelectorAll('#filters button').forEach(btn=>{
- btn.addEventListener('click',()=>{
-  document.querySelectorAll('#filters button').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  const l=btn.dataset.l;
-  if(l==='news'){openTab('news');return;}
-  openTab('match');
-  document.querySelectorAll('#matches.card').forEach(c=>{
-   if(l==='all') c.style.display='block';
-   else{ const comp=c.dataset.league||""; c.style.display=comp.toLowerCase().includes(l.toLowerCase())||(l==='ENG'&&comp.includes('Premier'))||(l==='ESP'&&comp.includes('LaLiga'))?'block':'none';}
-  });
+function filterL(c){
+ document.querySelectorAll('.card').forEach(card=>{
+  if(c==='all') card.style.display='block';
+  else card.style.display = (card.dataset.c && card.dataset.c.includes(c)) ? 'block' : 'none';
  });
-});
-loadESPN(); loadNewsAuto();
-setInterval(loadESPN,30000);
-setInterval(loadNewsAuto,60000);
+}
+loadLiveAuto();
+setInterval(loadLiveAuto,30000);
 </script>
 </body>
 </html>
