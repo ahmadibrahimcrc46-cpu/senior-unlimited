@@ -1,125 +1,34 @@
 <!DOCTYPE html>
-<html lang="ha">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Senior Unlimited - All Football Live</title>
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#0a8a0a">
-<script src="https://cdn.tailwindcss.com"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
-body{font-family:Inter,sans-serif;background:#0f1419;color:white}
-.live-dot{animation:pulse 1.5s infinite}
-@keyframes pulse{0%{opacity:1}50%{opacity:.3}100%{opacity:1}}
-.scroll-hide::-webkit-scrollbar{display:none}
-</style>
-</head>
-<body class="pb-20">
-<header class="sticky top-0 z-50 bg-[#0a8a0a] px-4 py-3 flex items-center justify-between shadow-lg">
-  <div class="flex items-center gap-2">
-    <div class="w-8 h-8 bg-white rounded-full flex items-center justify-center"><i class="fa-solid fa-futbol text-[#0a8a0a]"></i></div>
-    <h1 class="font-extrabold text-[17px]">Senior Unlimited</h1>
-    <span class="bg-white/20 text-[10px] px-2 py-0.5 rounded-full">LIVE</span>
-  </div>
-  <div class="flex gap-3 text-white/80">
-    <i class="fa-solid fa-search"></i>
-    <i class="fa-regular fa-bell"></i>
-  </div>
-</header>
-<div class="bg-[#1a232e] px-2 py-2 flex gap-2 overflow-x-auto scroll-hide sticky top-[56px] z-40">
-  <button onclick="loadLeague('all')" id="tab-all" class="tab active whitespace-nowrap bg-white text-black px-4 py-1.5 rounded-full text-[13px] font-bold">All</button>
-  <button onclick="loadLeague('eng.1')" id="tab-eng.1" class="tab whitespace-nowrap bg-[#232f3e] px-4 py-1.5 rounded-full text-[13px]">Premier League</button>
-  <button onclick="loadLeague('esp.1')" id="tab-esp.1" class="tab whitespace-nowrap bg-[#232f3e] px-4 py-1.5 rounded-full text-[13px]">LaLiga</button>
-  <button onclick="loadLeague('ger.1')" id="tab-ger.1" class="tab whitespace-nowrap bg-[#232f3e] px-4 py-1.5 rounded-full text-[13px]">Bundesliga</button>
-  <button onclick="loadLeague('ita.1')" id="tab-ita.1" class="tab whitespace-nowrap bg-[#232f3e] px-4 py-1.5 rounded-full text-[13px]">Serie A</button>
-  <button onclick="loadLeague('fra.1')" id="tab-fra.1" class="tab whitespace-nowrap bg-[#232f3e] px-4 py-1.5 rounded-full text-[13px]">Ligue 1</button>
-  <button onclick="loadLeague('uefa.champions')" id="tab-uefa.champions" class="tab whitespace-nowrap bg-[#232f3e] px-4 py-1.5 rounded-full text-[13px]">UCL</button>
-</div>
-<div class="px-4 py-3 flex justify-between items-center">
-  <h2 class="font-bold text-[15px]" id="dateTitle">Yau - Live Scores</h2>
-  <span class="text-[11px] bg-red-600 px-2 py-1 rounded flex items-center gap-1"><span class="w-2 h-2 bg-white rounded-full live-dot inline-block"></span> LIVE</span>
-</div>
-<div id="matches" class="px-3 space-y-3">
-  <div class="text-center py-20 text-white/50">
-    <i class="fa-solid fa-futbol fa-spin text-3xl mb-3"></i>
-    <p>Ana loda wasannin yau...</p>
-  </div>
-</div>
-<nav class="fixed bottom-0 left-0 right-0 bg-[#1a232e] border-t border-white/10 flex justify-around py-2">
-  <div class="flex flex-col items-center text-[#0a8a0a]"><i class="fa-solid fa-futbol"></i><span class="text-[10px] mt-1">Matches</span></div>
-  <div class="flex flex-col items-center text-white/40"><i class="fa-solid fa-trophy"></i><span class="text-[10px] mt-1">Leagues</span></div>
-  <div class="flex flex-col items-center text-white/40"><i class="fa-solid fa-newspaper"></i><span class="text-[10px] mt-1">News</span></div>
-  <div class="flex flex-col items-center text-white/40"><i class="fa-regular fa-user"></i><span class="text-[10px] mt-1">Me</span></div>
-</nav>
+<html lang="ha"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Senior Unlimited Live</title><script src="https://cdn.tailwindcss.com"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"><style>body{font-family:Inter,sans-serif;background:#0f1419;color:white}.live-dot{animation:pulse 1.5s infinite}@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}</style></head><body class="pb-20">
+<header class="bg-[#0a8a0a] px-4 py-3 flex justify-between sticky top-0 z-50"><div class="flex gap-2 items-center"><div class="w-8 h-8 bg-white rounded-full flex items-center justify-center"><i class="fa-futbol fa-solid text-[#0a8a0a]"></i></div><b>Senior Unlimited</b><span class="bg-white/20 text-[10px] px-2 py-0.5 rounded-full">LIVE</span></div><i class="fa-solid fa-bell"></i></header>
+<div class="bg-[#1a232e] p-2 flex gap-2 overflow-auto sticky top-[48px]"><button onclick="show('all')" class="bg-white text-black px-4 py-1 rounded-full text-xs font-bold">All</button><button onclick="show('PL')" class="bg-[#232f3e] px-4 py-1 rounded-full text-xs">Premier League</button><button onclick="show('PD')" class="bg-[#232f3e] px-4 py-1 rounded-full text-xs">LaLiga</button><button onclick="show('BL1')" class="bg-[#232f3e] px-4 py-1 rounded-full text-xs">Bundesliga</button></div>
+<div class="p-4 flex justify-between"><b id="d">Yau - Live</b><span class="bg-red-600 text-[10px] px-2 py-1 rounded">● LIVE</span></div>
+<div id="m" class="px-3 space-y-3"></div>
 <script>
-const today = new Date();
-const yyyyMMdd = today.toISOString().slice(0,10).replace(/-/g,'');
-document.getElementById('dateTitle').innerText = today.toLocaleDateString('ha-HA',{weekday:'long', day:'numeric', month:'short'}) + ' - Live';
-async function loadLeague(leagueCode){
-  document.querySelectorAll('.tab').forEach(t=>{t.classList.remove('bg-white','text-black','font-bold'); t.classList.add('bg-[#232f3e]')});
-  const active = document.getElementById('tab-'+leagueCode);
-  if(active){active.classList.remove('bg-[#232f3e]'); active.classList.add('bg-white','text-black','font-bold');}
-  const container = document.getElementById('matches');
-  container.innerHTML = '<div class="text-center py-20 text-white/50"><i class="fa-solid fa-futbol fa-spin text-3xl mb-3"></i><p>Ana loda wasanni...</p></div>';
-  let urls = [];
-  if(leagueCode==='all'){
-    urls = ['eng.1','esp.1','ger.1','ita.1','fra.1','uefa.champions'].map(l=>`https://site.api.espn.com/apis/site/v2/sports/soccer/${l}/scoreboard`);
-  } else {
-    urls = [`https://site.api.espn.com/apis/site/v2/sports/soccer/${leagueCode}/scoreboard`];
-  }
-  try{
-    let allEvents=[];
-    for(let url of urls){
-      try{
-        const res = await fetch(url);
-        const data = await res.json();
-        if(data.events) allEvents = allEvents.concat(data.events);
-      }catch(e){}
-    }
-    if(allEvents.length===0){
-      container.innerHTML = `<div class="bg-[#1a232e] rounded-xl p-6 text-center"><p class="text-white/60 text-sm">Babu wasa a yau a wannan league.</p></div>`;
-      return;
-    }
-    container.innerHTML='';
-    allEvents.forEach(ev=>{
-      const comp = ev.competitions[0];
-      const home = comp.competitors.find(c=>c.homeAway==='home');
-      const away = comp.competitors.find(c=>c.homeAway==='away');
-      const status = comp.status.type;
-      const isLive = status.state==='in';
-      const isFT = status.type.name==='STATUS_FINAL';
-      const time = status.displayClock || status.type.shortDetail || '';
-      const card = document.createElement('div');
-      card.className='bg-[#1a232e] rounded-xl p-3';
-      card.innerHTML=`
-        <div class="flex justify-between items-center text-[11px] text-white/50 mb-2">
-          <span><i class="fa-solid fa-trophy mr-1"></i> ${ev.league?.name || 'Football'}</span>
-          <span class="${isLive?'text-red-400 font-bold':''}">${isLive?'<span class="w-2 h-2 bg-red-500 rounded-full live-dot inline-block mr-1"></span>'+time: time}</span>
-        </div>
-        <div class="flex justify-between items-center">
-          <div class="flex items-center gap-2 w-[40%]">
-            <img src="${home.team.logo}" class="w-7 h-7 object-contain">
-            <span class="text-[13px] font-semibold truncate">${home.team.shortDisplayName}</span>
-          </div>
-          <div class="bg-[#0f1419] px-3 py-1 rounded-lg text-center min-w-[70px]">
-            <div class="font-extrabold text-[15px]">${home.score||0} - ${away.score||0}</div>
-            <div class="text-[10px] ${isLive?'text-red-400': isFT?'text-white/40':'text-green-400'}">${isLive?'LIVE': isFT?'FT': status.type.shortDetail}</div>
-          </div>
-          <div class="flex items-center gap-2 w-[40%] justify-end">
-            <span class="text-[13px] font-semibold truncate text-right">${away.team.shortDisplayName}</span>
-            <img src="${away.team.logo}" class="w-7 h-7 object-contain">
-          </div>
-        </div>
-      `;
-      container.appendChild(card);
-    });
-  }catch(err){
-    container.innerHTML=`<div class="bg-red-900/20 rounded-xl p-4 text-center text-sm">Kuskure. <button onclick="loadLeague('${leagueCode}')" class="mt-2 bg-white text-black px-4 py-1 rounded-full text-xs">Sake Loda</button></div>`;
-  }
+const mock=[
+{name:"Premier League",h:"Man City",a:"Arsenal",hs:2,as:1,time:"78'",live:true,hl:"https://resources.premierleague.com/premierleague/badges/43/t43.png",al:"https://resources.premierleague.com/premierleague/badges/3/t3.png"},
+{name:"LaLiga",h:"Real Madrid",a:"Barcelona",hs:1,as:1,time:"HT",live:true,hl:"https://crests.football-data.org/86.png",al:"https://crests.football-data.org/81.png"},
+{name:"Premier League",h:"Liverpool",a:"Chelsea",hs:0,as:0,time:"15:00",live:false,hl:"https://resources.premierleague.com/premierleague/badges/14/t14.png",al:"https://resources.premierleague.com/premierleague/badges/8/t8.png"},
+{name:"Bundesliga",h:"Bayern",a:"Dortmund",hs:3,as:2,time:"FT",live:false,hl:"https://crests.football-data.org/5.png",al:"https://crests.football-data.org/4.png"},
+];
+function render(list){
+ const c=document.getElementById('m');c.innerHTML='';
+ list.forEach(g=>{
+  const d=document.createElement('div');d.className='bg-[#1a232e] rounded-xl p-3';
+  d.innerHTML=`<div class="flex justify-between text-[11px] text-white/50 mb-2"><span>${g.name}</span><span class="${g.live?'text-red-400 font-bold':''}">${g.live?'● '+g.time:g.time}</span></div><div class="flex justify-between items-center"><div class="flex gap-2 items-center w-[38%]"><img src="${g.hl}" class="w-6 h-6"><span class="text-[13px] font-bold truncate">${g.h}</span></div><div class="bg-[#0f1419] px-3 py-1 rounded text-center min-w-[60px]"><div class="font-extrabold">${g.hs} - ${g.as}</div><div class="text-[10px] ${g.live?'text-red-400':'text-white/40'}">${g.live?'LIVE':g.time}</div></div><div class="flex gap-2 items-center w-[38%] justify-end"><span class="text-[13px] font-bold truncate">${g.a}</span><img src="${g.al}" class="w-6 h-6"></div></div>`;
+  c.appendChild(d);
+ });
 }
-loadLeague('all');
-</script>
-</body>
-</html>
+function show(l){if(l==='all')render(mock);else render(mock.filter(x=>x.name.includes(l)||(l==='PL'&&x.name==='Premier League')||(l==='PD'&&x.name==='LaLiga')||(l==='BL1'&&x.name==='Bundesliga')));}
+render(mock);
+async function loadReal(){
+ try{
+  const r=await fetch('https://api.allorigins.win/raw?url='+encodeURIComponent('https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/scoreboard'));
+  const j=await r.json(); if(j.events && j.events.length>0){
+   const real=j.events.map(ev=>{const comp=ev.competitions[0];const h=comp.competitors.find(x=>x.homeAway==='home');const a=comp.competitors.find(x=>x.homeAway==='away');return{name:ev.league.name,h:h.team.shortDisplayName,a:a.team.shortDisplayName,hs:h.score,as:a.score,time:comp.status.type.shortDetail,live:comp.status.type.state==='in',hl:h.team.logo,al:a.team.logo}});
+   if(real.length>0)render(real);
+  }
+ }catch(e){console.log('using mock');}
+}
+loadReal();
+</script></body></html>
