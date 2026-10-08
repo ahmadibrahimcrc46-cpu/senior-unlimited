@@ -47,7 +47,22 @@ h2{text-align:center;color:#0d47a1;margin-bottom:30px}
 </div>
 </div>
 </div>
-
+<!-- SENIOR BRAIN GAME -->
+<div style="background:white; margin:20px; padding:25px; border-radius:15px; box-shadow:0 4px 10px rgba(0,0,0,0.1); text-align:center; border:2px solid #FF8C00;">
+<h2 style="color:#0B4DA1;">🧠 Senior Brain Booster Game</h2>
+<p>Test your knowledge & keep your brain sharp!</p>
+<div id="quiz-box">
+<p id="question" style="font-weight:bold; font-size:18px; margin:20px 0;"></p>
+<button onclick="checkAnswer(0)" id="btn0" style="display:block; width:100%; margin:8px 0; padding:12px; background:#E6F0FF; border:1px solid #0B4DA1; border-radius:8px;"></button>
+<button onclick="checkAnswer(1)" id="btn1" style="display:block; width:100%; margin:8px 0; padding:12px; background:#E6F0FF; border:1px solid #0B4DA1; border-radius:8px;"></button>
+<button onclick="checkAnswer(2)" id="btn2" style="display:block; width:100%; margin:8px 0; padding:12px; background:#E6F0FF; border:1px solid #0B4DA1; border-radius:8px;"></button>
+<p id="score" style="margin-top:15px; font-weight:bold; color:#FF8C00;"></p>
+</div>
+</div>
+<script>
+const questions=[{q:"What year did Medicare start?",a:["1965","1975","1985"],c:0},{q:"Vitamin for senior bones?",a:["Vitamin C","Vitamin D","Vitamin A"],c:1},{q:"Daily walk for seniors?",a:["10 mins","30 mins","2 hours"],c:1},{q:"Senior discounts age?",a:["50+","55+","65+"],c:1},{q:"Food for memory?",a:["Blueberries","White bread","Soda"],c:0}];
+let current=0,score=0;function loadQ(){document.getElementById("question").innerText=questions[current].q;document.getElementById("btn0").innerText=questions[current].a[0];document.getElementById("btn1").innerText=questions[current].a[1];document.getElementById("btn2").innerText=questions[current].a[2];document.getElementById("score").innerText="Score: "+score+" / "+questions.length;}function checkAnswer(n){if(n==questions[current].c){score++;}current++;if(current<questions.length){loadQ();}else{document.getElementById("quiz-box").innerHTML="<h3>🎉 Score "+score+"/"+questions.length+"!</h3><button onclick='location.reload()' style='padding:12px 20px; background:#0B4DA1; color:white; border:none; border-radius:8px;'>Play Again</button>";}}loadQ();
+</script>
 <div class="container">
 <h2>Trending Now for Seniors</h2>
 <div class="grid">
