@@ -1,34 +1,13 @@
 <!DOCTYPE html>
-<html lang="ha"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Senior Unlimited Live</title><script src="https://cdn.tailwindcss.com"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"><style>body{font-family:Inter,sans-serif;background:#0f1419;color:white}.live-dot{animation:pulse 1.5s infinite}@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}</style></head><body class="pb-20">
-<header class="bg-[#0a8a0a] px-4 py-3 flex justify-between sticky top-0 z-50"><div class="flex gap-2 items-center"><div class="w-8 h-8 bg-white rounded-full flex items-center justify-center"><i class="fa-futbol fa-solid text-[#0a8a0a]"></i></div><b>Senior Unlimited</b><span class="bg-white/20 text-[10px] px-2 py-0.5 rounded-full">LIVE</span></div><i class="fa-solid fa-bell"></i></header>
-<div class="bg-[#1a232e] p-2 flex gap-2 overflow-auto sticky top-[48px]"><button onclick="show('all')" class="bg-white text-black px-4 py-1 rounded-full text-xs font-bold">All</button><button onclick="show('PL')" class="bg-[#232f3e] px-4 py-1 rounded-full text-xs">Premier League</button><button onclick="show('PD')" class="bg-[#232f3e] px-4 py-1 rounded-full text-xs">LaLiga</button><button onclick="show('BL1')" class="bg-[#232f3e] px-4 py-1 rounded-full text-xs">Bundesliga</button></div>
-<div class="p-4 flex justify-between"><b id="d">Yau - Live</b><span class="bg-red-600 text-[10px] px-2 py-1 rounded">● LIVE</span></div>
-<div id="m" class="px-3 space-y-3"></div>
-<script>
-const mock=[
-{name:"Premier League",h:"Man City",a:"Arsenal",hs:2,as:1,time:"78'",live:true,hl:"https://resources.premierleague.com/premierleague/badges/43/t43.png",al:"https://resources.premierleague.com/premierleague/badges/3/t3.png"},
-{name:"LaLiga",h:"Real Madrid",a:"Barcelona",hs:1,as:1,time:"HT",live:true,hl:"https://crests.football-data.org/86.png",al:"https://crests.football-data.org/81.png"},
-{name:"Premier League",h:"Liverpool",a:"Chelsea",hs:0,as:0,time:"15:00",live:false,hl:"https://resources.premierleague.com/premierleague/badges/14/t14.png",al:"https://resources.premierleague.com/premierleague/badges/8/t8.png"},
-{name:"Bundesliga",h:"Bayern",a:"Dortmund",hs:3,as:2,time:"FT",live:false,hl:"https://crests.football-data.org/5.png",al:"https://crests.football-data.org/4.png"},
-];
-function render(list){
- const c=document.getElementById('m');c.innerHTML='';
- list.forEach(g=>{
-  const d=document.createElement('div');d.className='bg-[#1a232e] rounded-xl p-3';
-  d.innerHTML=`<div class="flex justify-between text-[11px] text-white/50 mb-2"><span>${g.name}</span><span class="${g.live?'text-red-400 font-bold':''}">${g.live?'● '+g.time:g.time}</span></div><div class="flex justify-between items-center"><div class="flex gap-2 items-center w-[38%]"><img src="${g.hl}" class="w-6 h-6"><span class="text-[13px] font-bold truncate">${g.h}</span></div><div class="bg-[#0f1419] px-3 py-1 rounded text-center min-w-[60px]"><div class="font-extrabold">${g.hs} - ${g.as}</div><div class="text-[10px] ${g.live?'text-red-400':'text-white/40'}">${g.live?'LIVE':g.time}</div></div><div class="flex gap-2 items-center w-[38%] justify-end"><span class="text-[13px] font-bold truncate">${g.a}</span><img src="${g.al}" class="w-6 h-6"></div></div>`;
-  c.appendChild(d);
- });
-}
-function show(l){if(l==='all')render(mock);else render(mock.filter(x=>x.name.includes(l)||(l==='PL'&&x.name==='Premier League')||(l==='PD'&&x.name==='LaLiga')||(l==='BL1'&&x.name==='Bundesliga')));}
-render(mock);
-async function loadReal(){
- try{
-  const r=await fetch('https://api.allorigins.win/raw?url='+encodeURIComponent('https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/scoreboard'));
-  const j=await r.json(); if(j.events && j.events.length>0){
-   const real=j.events.map(ev=>{const comp=ev.competitions[0];const h=comp.competitors.find(x=>x.homeAway==='home');const a=comp.competitors.find(x=>x.homeAway==='away');return{name:ev.league.name,h:h.team.shortDisplayName,a:a.team.shortDisplayName,hs:h.score,as:a.score,time:comp.status.type.shortDetail,live:comp.status.type.state==='in',hl:h.team.logo,al:a.team.logo}});
-   if(real.length>0)render(real);
-  }
- }catch(e){console.log('using mock');}
-}
-loadReal();
-</script></body></html>
+<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Senior Unlimited Live</title><script src="https://cdn.tailwindcss.com"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"></head><body style="background:#0f1419;color:white;font-family:sans-serif" class="pb-20">
+<div style="background:#0a8a0a" class="p-3 flex justify-between sticky top-0"><b>⚽ Senior Unlimited LIVE</b><span style="background:red" class="text-[10px] px-2 py-1 rounded">LIVE</span></div>
+<div class="p-3 flex gap-2 overflow-auto"><span class="bg-white text-black px-3 py-1 rounded-full text-xs">All</span><span class="bg-[#232f3e] px-3 py-1 rounded-full text-xs">Premier League</span><span class="bg-[#232f3e] px-3 py-1 rounded-full text-xs">LaLiga</span></div>
+<div class="p-3"><b>Alhamis, Okt 8 - Live</b></div>
+<div class="px-3 space-y-3">
+<div class="bg-[#1a232e] rounded-xl p-3"><div class="flex justify-between text-[11px] opacity-50 mb-2"><span>Premier League</span><span style="color:#ff4444">● 78' LIVE</span></div><div class="flex justify-between items-center"><span class="font-bold text-sm">Man City</span><span class="bg-[#0f1419] px-3 py-1 rounded font-extrabold">2 - 1</span><span class="font-bold text-sm">Arsenal</span></div></div>
+<div class="bg-[#1a232e] rounded-xl p-3"><div class="flex justify-between text-[11px] opacity-50 mb-2"><span>LaLiga</span><span style="color:#ff4444">● HT LIVE</span></div><div class="flex justify-between items-center"><span class="font-bold text-sm">Real Madrid</span><span class="bg-[#0f1419] px-3 py-1 rounded font-extrabold">1 - 1</span><span class="font-bold text-sm">Barcelona</span></div></div>
+<div class="bg-[#1a232e] rounded-xl p-3"><div class="flex justify-between text-[11px] opacity-50 mb-2"><span>Premier League</span><span>15:00</span></div><div class="flex justify-between items-center"><span class="font-bold text-sm">Liverpool</span><span class="bg-[#0f1419] px-3 py-1 rounded font-extrabold">0 - 0</span><span class="font-bold text-sm">Chelsea</span></div></div>
+<div class="bg-[#1a232e] rounded-xl p-3"><div class="flex justify-between text-[11px] opacity-50 mb-2"><span>UCL</span><span>FT</span></div><div class="flex justify-between items-center"><span class="font-bold text-sm">Bayern</span><span class="bg-[#0f1419] px-3 py-1 rounded font-extrabold">3 - 2</span><span class="font-bold text-sm">Dortmund</span></div></div>
+</div>
+<div class="fixed bottom-0 left-0 right-0 bg-[#1a232e] flex justify-around py-2 border-t border-white/10"><span class="text-green-500 text-xs">Matches</span><span class="opacity-40 text-xs">Leagues</span><span class="opacity-40 text-xs">News</span><span class="opacity-40 text-xs">Me</span></div>
+</body></html>
