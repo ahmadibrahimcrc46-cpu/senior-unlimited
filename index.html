@@ -31,4 +31,21 @@
 <div class="mt-4 bg-[#1a232e] rounded-xl p-3 text-xs"><div class="flex justify-between py-2"><span>⚙️ Settings</span><span>›</span></div><div class="flex justify-between py-2"><span>🌙 Dark Mode</span><span>ON</span></div><div class="flex justify-between py-2"><span>📤 Share App</span><span>›</span></div></div>
 </div>
 
-<!-- BOTTOM NAV - Y
+<!-- BOTTOM NAV - YANZU DUK SUNA AIKI! -->
+<div class="fixed bottom-0 left-0 right-0 bg-[#1a232e] flex justify-around py-3 border-t border-white/10 z-50">
+<button onclick="showPage('matches',this)" class="navbtn flex flex-col items-center text-green-400"><span class="text-[11px] font-bold">Matches</span></button>
+<button onclick="showPage('leagues',this)" class="navbtn flex flex-col items-center opacity-50"><span class="text-[11px]">Leagues</span></button>
+<button onclick="showPage('news',this)" class="navbtn flex flex-col items-center opacity-50"><span class="text-[11px]">News</span></button>
+<button onclick="showPage('me',this)" class="navbtn flex flex-col items-center opacity-50"><span class="text-[11px]">Me</span></button>
+</div>
+
+<script>
+const games=[{cat:'PL',lg:'Premier League',h:'Man City',a:'Arsenal',hs:2,as:1,t:"78' LIVE",live:true},{cat:'LIGA',lg:'LaLiga',h:'Real Madrid',a:'Barcelona',hs:1,as:1,t:"HT LIVE",live:true},{cat:'PL',lg:'Premier League',h:'Liverpool',a:'Chelsea',hs:0,as:0,t:"19:00",live:false},{cat:'UCL',lg:'UCL',h:'Bayern',a:'Dortmund',hs:3,as:2,t:"FT",live:false}];
+function render(arr){const c=document.getElementById('list');c.innerHTML='';arr.forEach(g=>{c.innerHTML+=`<div class="bg-[#1a232e] rounded-xl p-3.5"><div class="flex justify-between text-[11px] opacity-50 mb-2"><span>${g.lg}</span><span style="color:${g.live?'#ff4444':'#aaa'}">${g.t}</span></div><div class="flex justify-between items-center"><b class="text-[14px] w-[35%]">${g.h}</b><span class="bg-[#0f1419] px-4 py-1.5 rounded font-bold">${g.hs}-${g.as}</span><b class="text-[14px] w-[35%] text-right">${g.a}</b></div></div>`})}
+function filterGames(cat,btn){document.querySelectorAll('#tabs button').forEach(b=>b.className='bg-[#232f3e] px-4 py-2 rounded-full text-xs');btn.className='bg-white text-black px-4 py-2 rounded-full text-xs font-bold';if(cat==='all')render(games);else render(games.filter(x=>x.cat===cat));}
+function showPage(p,btn){['matches','leagues','news','me'].forEach(x=>document.getElementById('page-'+x).classList.add('hidden'));document.getElementById('page-'+p).classList.remove('hidden');document.querySelectorAll('.navbtn').forEach(b=>b.className='navbtn flex flex-col items-center opacity-50');btn.className='navbtn flex flex-col items-center text-green-400';document.getElementById('header').innerHTML=p==='me'?'<b>👤 Profile</b><span class="text-xs opacity-50">Ahmad CRC</span>':p==='news'?'<b>📰 News</b><span class="text-xs">Live</span>':p==='leagues'?'<b>🏆 Leagues</b><span class="text-xs">Tables</span>':'<b>⚽ Senior Unlimited LIVE</b><span class="bg-red-600 text-[10px] px-2 py-1 rounded-full animate-pulse">● LIVE</span>';}
+render(games);
+setTimeout(()=>location.reload(true),30000);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden) location.reload(true);});
+</script>
+</body></html>
