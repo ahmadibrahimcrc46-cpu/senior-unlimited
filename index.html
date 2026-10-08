@@ -1,13 +1,11 @@
 <!DOCTYPE html>
-<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Senior Unlimited Live</title><script src="https://cdn.tailwindcss.com"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"></head><body style="background:#0f1419;color:white;font-family:sans-serif" class="pb-20">
-<div style="background:#0a8a0a" class="p-3 flex justify-between sticky top-0"><b>⚽ Senior Unlimited LIVE</b><span style="background:red" class="text-[10px] px-2 py-1 rounded">LIVE</span></div>
-<div class="p-3 flex gap-2 overflow-auto"><span class="bg-white text-black px-3 py-1 rounded-full text-xs">All</span><span class="bg-[#232f3e] px-3 py-1 rounded-full text-xs">Premier League</span><span class="bg-[#232f3e] px-3 py-1 rounded-full text-xs">LaLiga</span></div>
-<div class="p-3"><b>Alhamis, Okt 8 - Live</b></div>
-<div class="px-3 space-y-3">
-<div class="bg-[#1a232e] rounded-xl p-3"><div class="flex justify-between text-[11px] opacity-50 mb-2"><span>Premier League</span><span style="color:#ff4444">● 78' LIVE</span></div><div class="flex justify-between items-center"><span class="font-bold text-sm">Man City</span><span class="bg-[#0f1419] px-3 py-1 rounded font-extrabold">2 - 1</span><span class="font-bold text-sm">Arsenal</span></div></div>
-<div class="bg-[#1a232e] rounded-xl p-3"><div class="flex justify-between text-[11px] opacity-50 mb-2"><span>LaLiga</span><span style="color:#ff4444">● HT LIVE</span></div><div class="flex justify-between items-center"><span class="font-bold text-sm">Real Madrid</span><span class="bg-[#0f1419] px-3 py-1 rounded font-extrabold">1 - 1</span><span class="font-bold text-sm">Barcelona</span></div></div>
-<div class="bg-[#1a232e] rounded-xl p-3"><div class="flex justify-between text-[11px] opacity-50 mb-2"><span>Premier League</span><span>15:00</span></div><div class="flex justify-between items-center"><span class="font-bold text-sm">Liverpool</span><span class="bg-[#0f1419] px-3 py-1 rounded font-extrabold">0 - 0</span><span class="font-bold text-sm">Chelsea</span></div></div>
-<div class="bg-[#1a232e] rounded-xl p-3"><div class="flex justify-between text-[11px] opacity-50 mb-2"><span>UCL</span><span>FT</span></div><div class="flex justify-between items-center"><span class="font-bold text-sm">Bayern</span><span class="bg-[#0f1419] px-3 py-1 rounded font-extrabold">3 - 2</span><span class="font-bold text-sm">Dortmund</span></div></div>
-</div>
-<div class="fixed bottom-0 left-0 right-0 bg-[#1a232e] flex justify-around py-2 border-t border-white/10"><span class="text-green-500 text-xs">Matches</span><span class="opacity-40 text-xs">Leagues</span><span class="opacity-40 text-xs">News</span><span class="opacity-40 text-xs">Me</span></div>
-</body></html>
+<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><title>Senior Unlimited Live</title>
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Senior Unlimited">
+<link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/33/33736.png">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>body{background:#0f1419;color:white;font-family:-apple-system,sans-serif;overscroll-behavior:none}button:active{opacity:.6}</style>
+</head><body>
+<div style="background:#0a8a0a" class="p-3 flex justify-between sticky top-0 z-50 pt-[45px]"><b>⚽ Senior Unlimited LIVE</b><span style="background:#ff0000" class="text-[10px] px-2 py-1 rounded-full animate-pulse">● LIVE</span></div>
+<div class="p-2 flex gap-2 overflow-auto bg-[#0f1419] sticky top-[70px] z-40" id="tabs"><button onclick="filter('all',this)" class="bg-white text-black px-4 py-1.5 rounded-full text-xs font-bold">All</button><button onclick="filter('PL',this)" class="bg-[#232f3e] px-4 py-1.5 rounded-full text-xs">Premier League</button><button onclick="filter('LIGA',this)" class="bg-[#232f3e] px-4 py-1.5 rounded-full text-xs">LaLiga</button><button onclick="filter('UCL',this)" class="bg-[#232f3e] px-4 py-1.5 rounded-full text-xs">UCL</button></div>
+<div class="p-3 font-bold text-sm" id="date"></div>
+<div class="px-3 space-y-3 pb-
