@@ -5,99 +5,64 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#0eb052">
-<title>Senior Unlimited LIVE - AUTO</title>
+<title>Senior Unlimited LIVE</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,Roboto,Arial}
 body{background:#121212;color:#fff;padding-bottom:70px}
 .header{background:#0eb052;height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 14px;position:sticky;top:0;z-index:100}
-.header h1{font-size:15px;font-weight:800}
-.live-badge{background:rgba(0,0,0,.25);color:#7dff9a;padding:4px 10px;border-radius:16px;font-size:11px;display:flex;gap:5px;align-items:center}
+.live-badge{background:rgba(0,0,0,.25);color:#7dff9a;padding:5px 12px;border-radius:16px;font-size:11px;display:flex;gap:5px;align-items:center}
 .live-dot{width:8px;height:8px;background:#7dff9a;border-radius:50%;animation:blink 1s infinite}
 @keyframes blink{50%{opacity:.3}}
 .filters{display:flex;gap:8px;padding:10px 12px;overflow:auto;background:#121212;position:sticky;top:56px;z-index:90}
 .filters::-webkit-scrollbar{display:none}
 .filters button{border:0;padding:7px 14px;border-radius:20px;background:#1e1e1e;color:#999;font-size:13px;white-space:nowrap}
 .filters button.active{background:#fff;color:#000;font-weight:700}
-.card{background:#1e1e1e;border-radius:12px;margin:8px 12px;padding:12px 14px;border:1px solid #222}
+.card{background:#1e1e1e;border-radius:12px;margin:8px 12px;padding:12px 14px;border:1px solid #252525}
 .card-top{display:flex;justify-content:space-between;font-size:11px;color:#888;margin-bottom:10px}
-.card-top .live{color:#ff4d4d;font-weight:700}
 .card-main{display:flex;align-items:center;justify-content:space-between}
 .team{font-size:15px;font-weight:600;flex:1}
 .score{background:#121212;padding:6px 14px;border-radius:6px;font-weight:800;min-width:56px;text-align:center;border:1px solid #333}
 .bottom{position:fixed;bottom:0;left:0;right:0;height:66px;background:#1a1a1a;border-top:1px solid #222;display:flex;align-items:center;justify-content:space-around;z-index:200}
-.bn{color:#777;font-size:11px;display:flex;flex-direction:column;align-items:center;flex:1}
+.bn{color:#777;font-size:11px;display:flex;flex-direction:column;align-items:center;gap:3px;flex:1;cursor:pointer;padding:6px}
 .bn.active{color:#0eb052}
-.news-box{background:#1e1e1e;border-radius:12px;margin:8px 12px;padding:12px;display:flex;gap:10px}
-.news-box img{width:80px;height:56px;border-radius:6px;object-fit:cover;background:#333}
-.meta{font-size:11px;color:#888;margin-top:4px;display:flex;justify-content:space-between}
+.page{padding-bottom:10px}
 .hidden{display:none}
+.profile-head{background:#1e1e1e;margin:12px;border-radius:12px;padding:18px;text-align:center}
+.profile-head .avatar{width:64px;height:64px;background:#0eb052;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 10px}
+.list-item{background:#1e1e1e;margin:8px 12px;padding:14px;border-radius:12px;display:flex;justify-content:space-between;align-items:center}
+.league-item{background:#1e1e1e;margin:8px 12px;padding:14px;border-radius:12px;display:flex;gap:10px;align-items:center}
+.news-box{background:#1e1e1e;margin:8px 12px;padding:12px;border-radius:12px;display:flex;gap:10px}
+.news-box img{width:80px;height:56px;border-radius:6px;object-fit:cover;background:#333}
 </style>
 </head>
 <body>
-<div class="header"><h1>⚽ Senior Unlimited LIVE</h1><div class="live-badge"><span class="live-dot"></span><span id="liveCount">LIVE AUTO</span></div></div>
-<div class="filters">
-<button class="active" onclick="filterL('all')">All</button>
-<button onclick="filterL('PL')">Premier League</button>
-<button onclick="filterL('PD')">LaLiga</button>
-<button onclick="filterL('CL')">UCL</button>
-<button onclick="filterL('NPFL')">Nigeria</button>
-</div>
-<div id="matches">Ana jawo LIVE daga Turai da Token dinka... ⚽</div>
-<div style="height:80px"></div>
-<div class="bottom">
-<div class="bn active">⚽ Matches</div><div class="bn">🏆 Leagues</div><div class="bn">📰 News</div><div class="bn">👤 Me</div>
-</div>
-<script>
-const TOKEN = "ae0af64ba1e841a7887c7486d40f2d32";
+<div class="header"><h1>⚽ Senior Unlimited LIVE</h1><div class="live-badge"><span class="live-dot"></span><span id="lc">AUTO LIVE</span></div></div>
 
-async function loadLiveAuto(){
- const box=document.getElementById('matches');
- try{
-  const res=await fetch('https://api.football-data.org/v4/matches?status=LIVE,IN_PLAY,PAUSED', {
-   headers:{'X-Auth-Token': TOKEN}
-  });
-  const data=await res.json();
-  let html=""; let count=0;
-  if(data.matches && data.matches.length>0){
-   data.matches.forEach(m=>{
-    count++;
-    const comp=m.competition.name;
-    const home=m.homeTeam.shortName || m.homeTeam.name;
-    const away=m.awayTeam.shortName || m.awayTeam.name;
-    const hs=m.score.fullTime.home ?? m.score.halfTime.home ?? 0;
-    const as=m.score.fullTime.away ?? m.score.halfTime.away ?? 0;
-    const minute=m.minute ? m.minute+"'" : m.status;
-    const isLive=m.status==="IN_PLAY" || m.status==="PAUSED";
-    html+=`<div class="card" data-c="${m.competition.code}"><div class="card-top"><span>${comp}</span><span class="live" style="color:${isLive?'#ff4d4d':'#888'}">${minute} ${isLive?'LIVE':''}</span></div><div class="card-main"><div class="team">${home}</div><div class="score">${hs}-${as}</div><div class="team" style="text-align:right">${away}</div></div></div>`;
-   });
-  }
-  if(html===""){
-   // Idan babu LIVE yanzu - nuna Today's matches AUTO
-   const res2=await fetch('https://api.football-data.org/v4/matches?dateFrom='+new Date().toISOString().split('T')[0]+'&dateTo='+new Date().toISOString().split('T')[0], {headers:{'X-Auth-Token': TOKEN}});
-   const d2=await res2.json();
-   if(d2.matches){
-    d2.matches.slice(0,12).forEach(m=>{
-     html+=`<div class="card" data-c="${m.competition.code}"><div class="card-top"><span>${m.competition.name}</span><span>${m.utcDate.substr(11,5)} - ${m.status}</span></div><div class="card-main"><div class="team">${m.homeTeam.shortName}</div><div class="score">${m.score.fullTime.home??0}-${m.score.fullTime.away??0}</div><div class="team" style="text-align:right">${m.awayTeam.shortName}</div></div></div>`;
-    });
-   }
-  }
-  if(html==="") html=`<div style="padding:20px;text-align:center">Babu LIVE yanzu - app zai sabunta da kansa idan wasa ya fara<br><br>✅ Token yana aiki!<br>App yana duba Turai duk 30 seconds</div>`;
-  box.innerHTML=html;
-  document.getElementById('liveCount').innerText = count>0 ? count+" LIVE AUTO" : "AUTO • "+new Date().toLocaleTimeString();
- }catch(e){
-  box.innerHTML=`<div style="padding:20px;text-align:center">✅ Token yayi!<br>Error: ${e.message}<br><br>App yana aiki - zai jawo LIVE idan wasa ya fara</div>
-  <div class="card"><div class="card-top"><span>Premier League</span><span class="live" style="color:#ff4d4d">78' LIVE</span></div><div class="card-main"><div class="team">Man City</div><div class="score">2-1</div><div class="team" style="text-align:right">Arsenal</div></div></div>
-  <div class="card"><div class="card-top"><span>LaLiga</span><span class="live" style="color:#ff4d4d">HT LIVE</span></div><div class="card-main"><div class="team">Real Madrid</div><div class="score">1-1</div><div class="team" style="text-align:right">Barcelona</div></div></div>`;
- }
-}
-function filterL(c){
- document.querySelectorAll('.card').forEach(card=>{
-  if(c==='all') card.style.display='block';
-  else card.style.display = (card.dataset.c && card.dataset.c.includes(c)) ? 'block' : 'none';
- });
-}
-loadLiveAuto();
-setInterval(loadLiveAuto,30000);
-</script>
-</body>
-</html>
+<!-- FILTERS - ONLY FOR MATCHES -->
+<div class="filters" id="f">
+<button class="active" data-l="all">All</button>
+<button data-l="Premier">Premier League</button>
+<button data-l="LaLiga">LaLiga</button>
+<button data-l="UCL">UCL</button>
+<button data-l="Nigeria">Nigeria</button>
+</div>
+
+<!-- PAGE 1: MATCHES -->
+<div id="p-match" class="page">
+<div id="matches">Ana jawo LIVE... ⏳</div>
+</div>
+
+<!-- PAGE 2: LEAGUES - PERMANENT -->
+<div id="p-leagues" class="page hidden">
+<div class="league-item">🏴󠁧󠁢󠁥󠁮󠁧󠁿 Premier League <span style="margin-left:auto;color:#0eb052">▶</span></div>
+<div class="league-item">🇪🇸 LaLiga <span style="margin-left:auto;color:#0eb052">▶</span></div>
+<div class="league-item">🇩🇪 Bundesliga <span style="margin-left:auto;color:#0eb052">▶</span></div>
+<div class="league-item">🇮🇹 Serie A <span style="margin-left:auto;color:#0eb052">▶</span></div>
+<div class="league-item">🇪🇺 Champions League <span style="margin-left:auto;color:#0eb052">▶</span></div>
+<div class="league-item">🇳🇬 Nigeria PFL <span style="margin-left:auto;color:#0eb052">▶</span></div>
+<div class="league-item">🌍 Africa - AFCON <span style="margin-left:auto;color:#0eb052">▶</span></div>
+</div>
+
+<!-- PAGE 3: NEWS - PERMANENT -->
+<div id="p-news" class="page hidden">
+<div class="news-box"><img src="https://images.unsplash.com/photo-1579952363873-27f3bfad9c0d?w=200"><div><div style="font-size:13px">Messi ends Argentina career with goal vs Ben
