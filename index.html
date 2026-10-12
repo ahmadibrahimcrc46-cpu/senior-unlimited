@@ -1,399 +1,172 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { useGetFootballScores, getGetFootballScoresQueryKey } from '@workspace/api-client-react';
-import type { FootballMatch } from '@workspace/api-client-react';
-import { Activity, CalendarDays, Check, ChevronDown, CircleDot, Clock3, RefreshCw, Trophy } from 'lucide-react';
-import { GiSoccerBall } from 'react-icons/gi';
- 
-type DayOffset = 0 | 1;
-const FOOTBALL_TIMEZONE = 'Africa/Lagos';
- 
-function dateAtOffset(offset: DayOffset) {
-  const parts = new Intl.DateTimeFormat('en-CA', {
-    timeZone: FOOTBALL_TIMEZONE,
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-  }).formatToParts(new Date());
-  const values = Object.fromEntries(parts.map((part) => [part.type, part.value]));
-  const date = new Date(Date.UTC(
-    Number(values.year),
-    Number(values.month) - 1,
-    Number(values.day) + offset,
-  ));
-  return date.toISOString().slice(0, 10);
-}
- 
-function formatDate(date: Date, options: Intl.DateTimeFormatOptions) {
-  return new Intl.DateTimeFormat(undefined, {
-    ...options,
-    timeZone: FOOTBALL_TIMEZONE,
-  }).format(date);
-}
- 
-function kickoffTime(kickoff: string) {
-  const date = new Date(kickoff);
-  if (Number.isNaN(date.getTime())) return kickoff;
-  return formatDate(date, { hour: '2-digit', minute: '2-digit' });
-}
- 
-function TeamMark({ name, logo }: { name: string; logo: string | null }) {
-  const [failed, setFailed] = useState(false);
-  if (logo && !failed) {
-    return (
-      <img
-        className="team-badge"
-        src={logo}
-        alt=""
-        loading="lazy"
-        onError={() => setFailed(true)}
-      />
-    );
-  }
-  return <span className="team-fallback" aria-hidden="true">{name.slice(0, 2).toUpperCase()}</span>;
-}
- 
-function LeagueMark({ logo }: { logo: string | null }) {
-  const [failedLogo, setFailedLogo] = useState<string | null>(null);
-  if (logo && failedLogo !== logo) {
-    return (
-      <img
-        src={logo}
-        alt=""
-        loading="lazy"
-        onError={() => setFailedLogo(logo)}
-      />
-    );
-  }
-  return <GiSoccerBall size={19} aria-hidden="true" />;
-}
- 
-function MatchStatus({ match }: { match: FootballMatch }) {
-  switch (match.status) {
-    case 'live':
-      return <span className="status-pill live" data-testid={`status-match-${match.id}`}>Live</span>;
-    case 'upcoming':
-      return <span className="status-pill" data-testid={`status-match-${match.id}`}>Soon</span>;
-    case 'finished':
-      return <span className="status-pill finished" data-testid={`status-match-${match.id}`}>FT</span>;
-    case 'postponed':
-      return <span className="status-pill postponed" data-testid={`status-match-${match.id}`}>Postp.</span>;
-    case 'canceled':
-      return <span className="status-pill canceled" data-testid={`status-match-${match.id}`}>Cancel.</span>;
-  }
-}
- 
-function MatchRow({ match }: { match: FootballMatch }) {
-  const scoreReady = match.homeScore !== null && match.awayScore !== null;
-  const score = scoreReady ? `${match.homeScore} – ${match.awayScore}` : '– : –';
-  let detail = match.statusDetail;
-  if (match.status === 'live' && match.minute !== null) detail = `${match.minute}′`;
-  if (match.status === 'upcoming') detail = kickoffTime(match.kickoff);
-  if (match.status === 'finished' && !detail) detail = 'Full time';
- 
-  return (
-    <article className="match-row" data-testid={`match-${match.id}`} aria-label={`${match.homeTeamName} versus ${match.awayTeamName}`}>
-      {match.status === 'live' && <span className="live-bar" aria-hidden="true" />}
-      <div className="teams">
-        <div className="team">
-          <TeamMark name={match.homeTeamName} logo={match.homeTeamLogo} />
-          <span className="team-name" data-testid={`team-home-${match.id}`}>{match.homeTeamName}</span>
-        </div>
-        <div className="team">
-          <TeamMark name={match.awayTeamName} logo={match.awayTeamLogo} />
-          <span className="team-name" data-testid={`team-away-${match.id}`}>{match.awayTeamName}</span>
-        </div>
-      </div>
-      <div className="match-center">
-        <span className={`match-score${match.status === 'upcoming' || !scoreReady ? ' pending' : ''}`} data-testid={`score-${match.id}`}>
-          {match.status === 'upcoming' ? kickoffTime(match.kickoff) : score}
-        </span>
-        <span className={`match-note${match.status === 'live' ? ' live' : ''}`} data-testid={`detail-${match.id}`}>
-          {detail || (match.status === 'finished' ? 'Full time' : '')}
-        </span>
-      </div>
-      <MatchStatus match={match} />
-    </article>
-  );
-}
- 
-function LoadingMatches() {
-  return (
-    <div className="loading-list" role="status" aria-label="Loading today's fixtures">
-      {[0, 1, 2, 3].map((item) => (
-        <div className="skeleton-row" key={item}>
-          <div className="skeleton-team">
-            <span className="skeleton-line" style={{ width: '62%' }} />
-            <span className="skeleton-line" />
-          </div>
-          <span className="skeleton-line skeleton-score" />
-        </div>
-      ))}
-    </div>
-  );
-}
- 
-export default function Scoreboard() {
-  const [dayOffset, setDayOffset] = useState<DayOffset>(0);
-  const [leagueFilter, setLeagueFilter] = useState('all');
-  const [competitionMenuOpen, setCompetitionMenuOpen] = useState(false);
-  const competitionPickerRef = useRef<HTMLDivElement>(null);
-  const competitionTriggerRef = useRef<HTMLButtonElement>(null);
-  const selectedDate = dateAtOffset(dayOffset);
-  const queryKey = getGetFootballScoresQueryKey({ date: selectedDate });
-  const { data, isLoading, isError, error, refetch, isFetching } = useGetFootballScores(
-    { date: selectedDate },
-    { query: { queryKey, refetchInterval: 30_000, refetchIntervalInBackground: false } },
-  );
- 
-  const leagues = useMemo(() => {
-    const options = new Map<string, { value: string; label: string; logo: string | null }>();
-    for (const match of data?.matches ?? []) {
-      const value = `${match.leagueName}::${match.country ?? ''}`;
-      const existing = options.get(value);
-      if (!existing || (!existing.logo && match.leagueLogo)) {
-        options.set(value, {
-          value,
-          label: match.country ? `${match.leagueName} · ${match.country}` : match.leagueName,
-          logo: match.leagueLogo,
-        });
-      }
-    }
-    return [...options.values()].sort((a, b) => a.label.localeCompare(b.label));
-  }, [data?.matches]);
-  const matches = useMemo(() => {
-    const filtered = (data?.matches ?? []).filter((match) => (
-      leagueFilter === 'all' ||
-      `${match.leagueName}::${match.country ?? ''}` === leagueFilter
-    ));
-    return [...filtered].sort((a, b) => new Date(a.kickoff).getTime() - new Date(b.kickoff).getTime());
-  }, [data?.matches, leagueFilter]);
-  const groupedMatches = useMemo(() => {
-    const groups = new Map<string, FootballMatch[]>();
-    for (const match of matches) {
-      const key = `${match.leagueName}::${match.country ?? ''}`;
-      groups.set(key, [...(groups.get(key) ?? []), match]);
-    }
-    return [...groups.entries()];
-  }, [matches]);
-  const selectedLeague = leagues.find((league) => league.value === leagueFilter);
-  const selectedLeagueLabel = selectedLeague?.label ?? 'All competitions';
-  const selectedLeagueLogo = selectedLeague?.logo ?? null;
- 
-  useEffect(() => {
-    if (!competitionMenuOpen) return;
- 
-    const closeOnOutsideTap = (event: PointerEvent) => {
-      if (!competitionPickerRef.current?.contains(event.target as Node)) {
-        setCompetitionMenuOpen(false);
-      }
-    };
-    const closeOnEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        setCompetitionMenuOpen(false);
-        competitionTriggerRef.current?.focus();
-      }
-    };
- 
-    document.addEventListener('pointerdown', closeOnOutsideTap);
-    document.addEventListener('keydown', closeOnEscape);
-    return () => {
-      document.removeEventListener('pointerdown', closeOnOutsideTap);
-      document.removeEventListener('keydown', closeOnEscape);
-    };
-  }, [competitionMenuOpen]);
- 
-  const chooseDate = (offset: DayOffset) => {
-    setDayOffset(offset);
-    setLeagueFilter('all');
-    setCompetitionMenuOpen(false);
-  };
- 
-  const liveCount = (data?.matches ?? []).filter((match) => match.status === 'live').length;
-  const dateLabel = new Date(`${selectedDate}T12:00:00.000Z`);
-  const titleDate = formatDate(dateLabel, { weekday: 'long', month: 'long', day: 'numeric' });
-  const timezone = FOOTBALL_TIMEZONE;
-  const updatedTime = data?.updatedAt
-    ? formatDate(new Date(data.updatedAt), { hour: '2-digit', minute: '2-digit' })
-    : null;
-  const errorMessage =
-    error instanceof Error
-      ? error.message.replace(/^Request failed with status \d+:\s*/, '')
-      : 'Live match data is temporarily unavailable. Please try again.';
-  const hasNoMatches = !isLoading && !isError && matches.length === 0;
- 
-  return (
-    <main className="app-shell">
-      <header className="topbar">
-        <div className="topbar-inner">
-          <div className="brand" aria-label="Football Live">
-            <span className="brand-mark"><Activity size={18} strokeWidth={2} /></span>
-            <span className="brand-name">FOOTBALL <span>LIVE</span></span>
-          </div>
-          <div className="top-meta">
-            <span className="live-indicator"><span className="live-dot" /> Matchday</span>
-            <span aria-hidden="true">/</span>
-            <span>{timezone}</span>
-          </div>
-        </div>
-      </header>
- 
-      <div className="page-wrap">
-        <section className="intro-row" aria-labelledby="scoreboard-title">
-          <div>
-            <div className="eyebrow"><CircleDot size={12} /> The matchday board</div>
-            <h1 className="hero-title" id="scoreboard-title">{dayOffset === 0 ? 'Today’s football' : 'Tomorrow’s fixtures'}</h1>
-            <p className="hero-subtitle">{titleDate} <span aria-hidden="true">·</span> Every kickoff, as it happens.</p>
-          </div>
-          <div className="updated" aria-live="polite">
-            <RefreshCw size={11} className={isFetching ? 'animate-spin' : ''} />
-            {updatedTime ? `Updated ${updatedTime}` : 'Scores refresh automatically'}
-          </div>
-        </section>
- 
-        <section className="control-panel" aria-label="Scoreboard filters">
-          <div className="date-switch" role="group" aria-label="Choose fixture date">
-            <button
-              type="button"
-              className={`date-button${dayOffset === 0 ? ' active' : ''}`}
-              aria-pressed={dayOffset === 0}
-              data-testid="button-today"
-              onClick={() => chooseDate(0)}
-            >
-              <CalendarDays size={14} /> Today
-            </button>
-            <button
-              type="button"
-              className={`date-button${dayOffset === 1 ? ' active' : ''}`}
-              aria-pressed={dayOffset === 1}
-              data-testid="button-tomorrow"
-              onClick={() => chooseDate(1)}
-            >
-              <CalendarDays size={14} /> Tomorrow
-            </button>
-          </div>
-          <div className="filters-wrap">
-            <span className="filter-label" id="competition-filter-label">Competition</span>
-            <div className="competition-select-wrap" ref={competitionPickerRef}>
-              <button
-                ref={competitionTriggerRef}
-                className="competition-trigger"
-                id="league-filter"
-                type="button"
-                aria-label={`Competition: ${selectedLeagueLabel}`}
-                aria-expanded={competitionMenuOpen}
-                aria-haspopup="true"
-                aria-controls="competition-options"
-                aria-labelledby="competition-filter-label competition-trigger-value"
-                onClick={() => setCompetitionMenuOpen((open) => !open)}
-                data-testid="select-league"
-              >
-                <span className="competition-trigger-value" id="competition-trigger-value">
-                  <span className="competition-option-mark"><LeagueMark logo={selectedLeagueLogo} /></span>
-                  <span className="competition-option-label">{selectedLeagueLabel}</span>
-                </span>
-                <ChevronDown size={15} aria-hidden="true" />
-              </button>
-              {competitionMenuOpen && (
-                <div
-                  className="competition-menu"
-                  id="competition-options"
-                  role="group"
-                  aria-label="Choose a competition"
-                  data-testid="competition-menu"
-                >
-                  <button
-                    className={`competition-option${leagueFilter === 'all' ? ' selected' : ''}`}
-                    type="button"
-                    aria-pressed={leagueFilter === 'all'}
-                    onClick={() => { setLeagueFilter('all'); setCompetitionMenuOpen(false); }}
-                    data-testid="competition-option-all"
-                  >
-                    <span className="competition-option-mark"><LeagueMark logo={null} /></span>
-                    <span className="competition-option-label">All competitions</span>
-                    {leagueFilter === 'all' && <Check size={15} aria-hidden="true" />}
-                  </button>
-                  {leagues.map((league, index) => (
-                    <button
-                      className={`competition-option${leagueFilter === league.value ? ' selected' : ''}`}
-                      key={league.value}
-                      type="button"
-                      aria-pressed={leagueFilter === league.value}
-                      onClick={() => { setLeagueFilter(league.value); setCompetitionMenuOpen(false); }}
-                      data-testid={`competition-option-${index}`}
-                    >
-                      <span className="competition-option-mark"><LeagueMark logo={league.logo} /></span>
-                      <span className="competition-option-label">{league.label}</span>
-                      {leagueFilter === league.value && <Check size={15} aria-hidden="true" />}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
-        </section>
- 
-        <div className="stats-strip" aria-live="polite">
-          <span className="stat"><strong>{data?.matches.length ?? '—'}</strong> matches</span>
-          <span className="stat-separator" aria-hidden="true" />
-          <span className="stat stat-live"><span className="live-dot" /><strong>{liveCount}</strong> live</span>
-          <span className="stat-separator" aria-hidden="true" />
-          <span className="stat"><Clock3 size={12} /><strong>{leagues.length}</strong> leagues</span>
-        </div>
- 
-        {isLoading && <LoadingMatches />}
- 
-        {isError && !isLoading && (
-          <section className="error-card" role="alert" data-testid="error-scoreboard">
-            <div className="error-copy">
-              <h2>Live scores unavailable</h2>
-              <p>{errorMessage}</p>
-            </div>
-            <button className="retry-button" type="button" onClick={() => void refetch()} data-testid="button-retry">
-              <RefreshCw size={13} /> Try again
-            </button>
-          </section>
-        )}
- 
-        {hasNoMatches && (
-          <section className="empty-card" data-testid="empty-scoreboard">
-            <div>
-              <div className="empty-mark"><Trophy size={19} strokeWidth={1.6} /></div>
-              <h2>{leagueFilter === 'all' ? 'No fixtures on the board' : 'No matches in this competition'}</h2>
-              <p>{leagueFilter === 'all'
-                ? 'There are no scheduled matches for this date. Switch days to see what’s coming up.'
-                : 'Try another competition or view all matches for this date.'}</p>
-            </div>
-          </section>
-        )}
- 
-        {!isLoading && !isError && groupedMatches.map(([groupKey, group]) => {
-          const firstMatch = group[0];
-          const leagueLogo = group.find((match) => match.leagueLogo)?.leagueLogo ?? null;
-          return (
-            <section className="league-section" key={groupKey} data-testid={`league-${firstMatch.id}`}>
-              <header className="league-heading">
-                <div className="league-title">
-                  <span className="league-emblem"><LeagueMark logo={leagueLogo} /></span>
-                  <span className="league-name">
-                    {firstMatch.leagueName}
-                    {firstMatch.country && <span className="league-country"> · {firstMatch.country}</span>}
-                  </span>
-                </div>
-                <span className="league-count">{group.length} {group.length === 1 ? 'match' : 'matches'}</span>
-              </header>
-              {group.map((match) => <MatchRow match={match} key={match.id} />)}
-            </section>
-          );
-        })}
- 
-        {!isLoading && !isError && !hasNoMatches && (
-          <footer className="footer-note">
-            <span>Times shown in {timezone}</span>
-            <span>{data?.updatedAt ? `Last checked ${updatedTime}` : 'Live scores refresh every minute'}</span>
-            <span>Match data via API-Football</span>
-          </footer>
-        )}
-      </div>
-    </main>
-  );
-}
+SENIOR LIVE SCORE — COMPLETE FOOTBALL APP PROJECT
+
+Build a complete, professional, mobile-first football live-score web app named SENIOR LIVE SCORE. Treat this as a full application project, not just a homepage or visual mockup.
+
+1. DESIGN AND BRANDING
+
+* Use a premium dark navy, black, white, and football green color scheme.
+* Create a clean, modern, professional football-app interface.
+* Display the SENIOR LIVE SCORE name and app logo.
+* Make the design responsive for iPhone, Android, tablets, and desktop browsers.
+* Include light mode and dark mode.
+* Use clear typography, polished match cards, team badges, league icons, and loading indicators.
+
+2. HOME SCREEN
+
+Create a complete Home screen featuring:
+
+* Today’s matches.
+* Live matches with LIVE labels.
+* Current scores and match minutes when available.
+* Upcoming fixtures.
+* Recently completed matches.
+* Favorite teams and competitions.
+* Featured football news.
+* Quick navigation to all major sections.
+
+3. FOOTBALL SCORES AND FIXTURES
+
+Create dedicated sections for:
+
+* Live Scores.
+* Today’s fixtures.
+* Tomorrow’s fixtures.
+* Future match schedules.
+* Finished matches.
+* Postponed and cancelled matches.
+* Competition and league filters.
+* Match status filters.
+* Automatic score refresh every 30 seconds when supported by the data provider.
+* Manual refresh and clear error messages.
+
+Use Africa/Lagos as the default time zone. Display match dates and kick-off times correctly in the user’s selected time zone.
+
+4. LEAGUES AND COMPETITIONS
+
+Prepare pages for major competitions, including:
+
+* English Premier League.
+* Spanish La Liga.
+* Italian Serie A.
+* German Bundesliga.
+* French Ligue 1.
+* UEFA Champions League.
+* UEFA Europa League.
+* Other available domestic and international competitions.
+
+Allow users to open a competition and see its fixtures, results, standings, and participating teams whenever the data provider supports them.
+
+5. TEAMS AND PLAYERS
+
+Create team profile pages with:
+
+* Club name and official badge when available.
+* Squad and player profiles.
+* Coaches and managers.
+* Formation and starting lineup when available.
+* Player numbers and positions.
+* Team fixtures and recent results.
+* Team statistics and league position.
+
+Include clubs such as Real Madrid, Barcelona, Atlético Madrid, Arsenal, Liverpool, Manchester City, Manchester United, Bayern Munich, and Paris Saint-Germain.
+
+6. MATCH DETAILS
+
+Each match should have a dedicated details page with:
+
+* Teams and score.
+* Match status and match time.
+* Goals and available match events.
+* Lineups and formations.
+* Match statistics.
+* Head-to-head information when available.
+* Competition and venue information.
+
+Do not invent match events, player information, or statistics.
+
+7. NEWS AND NOTIFICATIONS
+
+Create:
+
+* Football news section.
+* Transfer news section.
+* Match reminders.
+* Favorite-team notifications.
+* Goal notifications where technically supported.
+* Notification preferences.
+
+Only display verified or API-provided news and events. Clearly handle unavailable data.
+
+8. USER FEATURES
+
+Create:
+
+* Home.
+* Live Scores.
+* Fixtures.
+* Leagues.
+* News.
+* Favorites.
+* Match Details.
+* Team Profiles.
+* Player Profiles.
+* Lineup and Match Statistics.
+* Notifications.
+* Settings.
+* Language selection.
+* Dark mode.
+* User profile where authentication is supported.
+
+Make navigation functional. Buttons should perform their intended actions.
+
+9. REAL FOOTBALL DATA API
+
+Prepare a proper integration layer for a football-data API such as API-Football.
+
+Requirements:
+
+* Keep API keys in secure server-side secrets or environment variables.
+* Never expose private API keys in browser code.
+* Use the provider’s supported endpoints for fixtures, live scores, teams, leagues, standings, lineups, and statistics.
+* Refresh live scores every 30 seconds only when permitted by the provider’s rate limits and the hosting platform.
+* Handle loading, empty results, API errors, rate limits, and missing data.
+* Use real API data when configured.
+* Never pretend that sample data is live football data.
+* If an API key is missing, explain how to configure it and show a clear setup message.
+
+10. DATABASE AND PERFORMANCE
+
+Design the necessary data structure for teams, leagues, matches, players, favorites, user settings, and notifications where supported by the platform.
+
+Avoid duplicate requests. Cache data when appropriate and permitted. Keep the interface fast and usable on mobile internet connections.
+
+11. SECURITY AND RELIABILITY
+
+* Validate user inputs.
+* Protect API credentials.
+* Provide sensible error handling.
+* Avoid exposing sensitive information.
+* Keep the project organized and maintainable.
+* Do not claim a feature works until it has been implemented and tested.
+
+12. ADVERTISING AND FUTURE RELEASE
+
+Prepare the project for future advertising integration, subject to the advertising provider’s policies and approval. Do not insert fake ads or claim earnings are guaranteed.
+
+Keep the application suitable for later deployment under a custom domain and for possible installation as a Progressive Web App, where supported.
+
+13. BUILDING INSTRUCTIONS
+
+First inspect the platform’s capabilities. Build the actual supported application, not just a written plan or static mockup. Prioritize the Home screen, navigation, fixtures, live-score display, and API integration.
+
+If any feature cannot be implemented on the current plan, clearly identify the limitation instead of pretending it is complete.
+
+Keep the project on the Free plan wherever possible. Do not purchase an upgrade or enable paid services without my permission.
+
+At the end, report:
+
+1. What has actually been built.
+2. Which features work.
+3. Which features still need an API key or external service.
+4. Any free-plan limitations.
+5. The exact next steps required to test the app.
