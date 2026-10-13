@@ -6,113 +6,461 @@
 
 <head>
 
-  <meta charset="UTF-8">
+<meta charset="UTF-8">
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <meta name="theme-color" content="#087f3e">
+<meta name="theme-color" content="#07170f">
 
-  <title>Senior Unlimited</title>
+<title>Senior Unlimited - Football Live</title>
 
-  <link rel="manifest" href="./manifest.json">
+<style>
 
-  <style>
+:root{--bg:#07170f;--card:#11271a;--green:#20d879;--muted:#9bb4a4;--line:#294534}
 
-    body {
+*{box-sizing:border-box}
 
-      margin: 0;
+body{margin:0;background:var(--bg);color:#f5fff7;font-family:Arial,sans-serif;padding-bottom:78px}
 
-      background: #07150f;
+header{padding:23px 16px;background:linear-gradient(130deg,#155a35,#07170f)}
 
-      color: white;
+.brand{display:flex;align-items:center;gap:12px}
 
-      font-family: Arial, sans-serif;
+.logo{background:var(--green);color:#062012;border-radius:14px;padding:12px;font-size:27px}
 
-      text-align: center;
+h1{font-size:20px;margin:0 0 5px}
 
-    }
+small,.muted{color:var(--muted)}
 
-    header {
+.wrap{max-width:760px;margin:auto;padding:0 14px}
 
-      background: #087f3e;
+nav.top{display:flex;gap:8px;overflow:auto;padding:14px 0}
 
-      padding: 25px 12px;
+button{cursor:pointer}
 
-    }
+nav button,.day{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:10px 14px;color:#d9eee0;white-space:nowrap}
 
-    h1 { margin: 0; }
+button.active,.day.active{background:var(--green);color:#062012;font-weight:bold}
 
-    .content { padding: 28px 16px; }
+h2{font-size:19px}
 
-    .card {
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:15px 0}
 
-      background: #14271d;
+.stat,.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px}
 
-      border-radius: 12px;
+.stat{text-align:center}
 
-      padding: 20px;
+.stat b{font-size:22px;display:block;margin-bottom:5px}
 
-      margin: 16px auto;
+.stat small{font-size:11px}
 
-      max-width: 420px;
+.days{display:flex;gap:8px;margin:14px 0}
 
-    }
+.league{background:#163522;padding:12px;border-radius:12px 12px 0 0;font-size:13px;font-weight:bold;margin-top:14px}
 
-    button {
+.match{background:var(--card);border:1px solid var(--line);border-top:0;padding:14px;border-radius:0 0 12px 12px}
 
-      background: #16a34a;
+.teams{display:grid;grid-template-columns:1fr 58px 1fr;align-items:center;gap:5px}
 
-      color: white;
+.team{font-size:13px;overflow-wrap:anywhere}
 
-      border: 0;
+.away{text-align:right}
 
-      border-radius: 8px;
+.score{text-align:center;font-size:19px;font-weight:bold}
 
-      padding: 12px 20px;
+.meta{text-align:center;color:var(--muted);font-size:12px;margin-top:12px}
 
-      font-size: 16px;
+.page{display:none}.page.active{display:block}
 
-    }
+.msg{text-align:center;padding:25px 12px;line-height:1.6;color:var(--muted)}
 
-  </style>
+.action{background:var(--green);color:#062012;border:0;padding:11px 15px;border-radius:10px;font-weight:bold}
+
+.bottom{position:fixed;bottom:0;left:0;right:0;background:#0b1d12;border-top:1px solid var(--line);display:flex;justify-content:space-around;padding:12px 3px}
+
+.bottom button{background:none;border:0;color:var(--muted);font-size:12px}
+
+.bottom button.active{color:var(--green)}
+
+.row{display:flex;justify-content:space-between;align-items:center;gap:10px}
+
+</style>
 
 </head>
 
 <body>
 
-  <header>
+<header>
 
-    <h1>⚽ SENIOR UNLIMITED</h1>
+ <div class="wrap brand">
 
-    <p>Football Live Score</p>
+  <div class="logo">⚽</div>
 
-  </header>
+  <div>
 
-  <main class="content">
+   <h1>SENIOR UNLIMITED</h1>
 
-    <div class="card">
+   <small>FOOTBALL · LIVE SCORES</small><br>
 
-      <h2>Live Scores</h2>
+   <small id="connection">Ready to connect</small>
 
-      <p>Football matches will appear here.</p>
+  </div>
 
-      <p>Live scores require a working football API connection.</p>
+ </div>
 
-    </div>
+</header>
 
-    <div class="card">
+<main class="wrap">
 
-      <h3>⚽ Matches</h3>
+<nav class="top">
 
-      <h3>📰 Football News</h3>
+ <button class="active" data-page="home">Home</button>
 
-      <h3>📊 Match Statistics</h3>
+ <button data-page="news">News</button>
 
-      <h3>⚙️ Settings</h3>
+ <button data-page="stats">Statistics</button>
 
-    </div>
+ <button data-page="settings">Settings</button>
 
-  </main>
+</nav>
+
+<section id="home" class="page active">
+
+ <div class="row"><h2>Matchday Central</h2><small id="dateLabel"></small></div>
+
+ <div class="stats">
+
+  <div class="stat"><b id="total">—</b><small>MATCHES</small></div>
+
+  <div class="stat"><b id="live">—</b><small>LIVE NOW</small></div>
+
+  <div class="stat"><b id="leagues">—</b><small>LEAGUES</small></div>
+
+ </div>
+
+ <div class="days">
+
+  <button class="day active" data-offset="0">Today</button>
+
+  <button class="day" data-offset="1">Tomorrow</button>
+
+  <button class="day" data-offset="-1">Yesterday</button>
+
+ </div>
+
+ <div class="row"><small>Football fixtures · Lagos time</small><button class="action" id="refresh">↻ Refresh</button></div>
+
+ <div id="matches"><div class="card msg">Enter your API key in the code to begin testing.</div></div>
+
+</section>
+
+<section id="news" class="page">
+
+ <h2>Football News</h2>
+
+ <div class="card"><h3>Latest News</h3><p class="muted">A news provider must be connected before live news can appear here.</p></div>
+
+ <div class="card"><h3>Transfers</h3><p class="muted">Transfer updates will be added in a later stage.</p></div>
+
+</section>
+
+<section id="stats" class="page">
+
+ <h2>Match Statistics</h2>
+
+ <div class="stats">
+
+  <div class="stat"><b id="stTotal">—</b><small>FIXTURES</small></div>
+
+  <div class="stat"><b id="stLive">—</b><small>LIVE</small></div>
+
+  <div class="stat"><b id="stFinished">—</b><small>FINISHED</small></div>
+
+ </div>
+
+ <div class="card"><p class="muted">These are summary statistics for returned fixtures. Detailed possession, shots, and line-ups require additional match-data requests.</p></div>
+
+</section>
+
+<section id="settings" class="page">
+
+ <h2>Settings</h2>
+
+ <div class="card"><b>Timezone</b><p class="muted">Africa/Lagos (WAT)</p></div>
+
+ <div class="card"><b>Auto refresh</b><p class="muted">Every 30 seconds while the page is open.</p></div>
+
+ <div class="card"><b>API connection</b><p id="apiInfo" class="muted">Waiting for test.</p></div>
+
+ <div class="card"><b>Add to Home Screen</b><p class="muted">Use your browser's Share or menu option, then choose Add to Home Screen if available.</p></div>
+
+</section>
+
+</main>
+
+<nav class="bottom">
+
+ <button class="active" data-page="home">⌂ Home</button>
+
+ <button data-page="news">📰 News</button>
+
+ <button data-page="stats">▤ Stats</button>
+
+ <button data-page="settings">⚙ Settings</button>
+
+</nav>
+
+<script>
+
+/*
+
+TEMPORARY TEST ONLY.
+
+Do not publish this API key in a public repository.
+
+Use a newly generated key, since the previous one was exposed.
+
+*/
+
+const API_KEY = "PASTE_YOUR_NEW_API_FOOTBALL_KEY_HERE";
+
+const API_URL = "https://v3.football.api-sports.io/fixtures";
+
+let offset = 0, fixtures = [], busy = false;
+
+const $ = id => document.getElementById(id);
+
+function localDate(n) {
+
+  const d = new Date();
+
+  d.setDate(d.getDate() + n);
+
+  const parts = new Intl.DateTimeFormat("en-CA", {
+
+    timeZone:"Africa/Lagos", year:"numeric", month:"2-digit", day:"2-digit"
+
+  }).formatToParts(d);
+
+  const v = Object.fromEntries(parts.map(p => [p.type,p.value]));
+
+  return `${v.year}-${v.month}-${v.day}`;
+
+}
+
+$("dateLabel").textContent = new Intl.DateTimeFormat("en-GB", {
+
+  timeZone:"Africa/Lagos", day:"numeric", month:"short"
+
+}).format(new Date());
+
+function escapeHTML(v) {
+
+  return String(v ?? "").replace(/[&<>"']/g, c => ({
+
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+
+  })[c]);
+
+}
+
+document.querySelectorAll("[data-page]").forEach(b => b.addEventListener("click", () => {
+
+  document.querySelectorAll(".page").forEach(p => p.classList.toggle("active",p.id===b.dataset.page));
+
+  document.querySelectorAll("[data-page]").forEach(x => x.classList.toggle("active",x.dataset.page===b.dataset.page));
+
+}));
+
+document.querySelectorAll("[data-offset]").forEach(b => b.addEventListener("click", () => {
+
+  offset = Number(b.dataset.offset);
+
+  document.querySelectorAll("[data-offset]").forEach(x => x.classList.toggle("active",x===b));
+
+  document.querySelectorAll(".day").forEach(x => x.classList.toggle("active",x===b));
+
+  loadFixtures();
+
+}));
+
+$("refresh").addEventListener("click", () => loadFixtures());
+
+function renderFixtures() {
+
+  const liveStatuses = ["1H","2H","ET","P","LIVE","HT","BT"];
+
+  const live = fixtures.filter(f => liveStatuses.includes(f.fixture?.status?.short));
+
+  $("total").textContent = fixtures.length;
+
+  $("live").textContent = live.length;
+
+  $("leagues").textContent = new Set(fixtures.map(f => f.league?.id).filter(Boolean)).size;
+
+  $("stTotal").textContent = fixtures.length;
+
+  $("stLive").textContent = live.length;
+
+  $("stFinished").textContent = fixtures.filter(f => ["FT","AET","PEN"].includes(f.fixture?.status?.short)).length;
+
+  if (!fixtures.length) {
+
+    $("matches").innerHTML = '<div class="card msg">No fixtures returned for this date. Check the API response and subscription limit.</div>';
+
+    return;
+
+  }
+
+  const groups = {};
+
+  fixtures.forEach(f => {
+
+    const name = f.league?.name || "Football";
+
+    (groups[name] ||= []).push(f);
+
+  });
+
+  $("matches").innerHTML = Object.entries(groups).map(([name,list]) =>
+
+    '<div class="league">🏆 ' + escapeHTML(name) + '</div>' +
+
+    list.map(f => {
+
+      const h = f.teams?.home || {}, a = f.teams?.away || {};
+
+      const s = f.fixture?.status || {};
+
+      const finished = ["FT","AET","PEN"].includes(s.short);
+
+      const started = liveStatuses.includes(s.short) || finished;
+
+      const score = started
+
+        ? escapeHTML(f.goals?.home ?? "-") + " - " + escapeHTML(f.goals?.away ?? "-")
+
+        : "–";
+
+      const time = s.elapsed != null && liveStatuses.includes(s.short)
+
+        ? "LIVE · " + s.elapsed + "'"
+
+        : finished ? "Finished"
+
+        : s.long || (f.fixture?.date ? new Intl.DateTimeFormat("en-GB", {
+
+            timeZone:"Africa/Lagos", hour:"2-digit", minute:"2-digit"
+
+          }).format(new Date(f.fixture.date)) : "Scheduled");
+
+      return '<div class="match"><div class="teams">' +
+
+        '<div class="team">' + escapeHTML(h.name || "Home") + '</div>' +
+
+        '<div class="score">' + score + '</div>' +
+
+        '<div class="team away">' + escapeHTML(a.name || "Away") + '</div>' +
+
+        '</div><div class="meta">' + escapeHTML(time) + '</div></div>';
+
+    }).join("")
+
+  ).join("");
+
+}
+
+async function loadFixtures() {
+
+  if (busy) return;
+
+  if (!API_KEY || API_KEY === "PASTE_YOUR_NEW_API_FOOTBALL_KEY_HERE") {
+
+    $("connection").textContent = "API key not configured";
+
+    $("apiInfo").textContent = "Replace the API_KEY placeholder in the script before testing.";
+
+    $("matches").innerHTML = '<div class="card msg">API key has not been entered in the code yet.</div>';
+
+    return;
+
+  }
+
+  busy = true;
+
+  $("connection").textContent = "Connecting to API-Football…";
+
+  $("matches").innerHTML = '<div class="card msg">Loading fixtures…</div>';
+
+  try {
+
+    const url = API_URL + "?date=" + encodeURIComponent(localDate(offset)) +
+
+      "&timezone=" + encodeURIComponent("Africa/Lagos");
+
+    const response = await fetch(url, {
+
+      method:"GET",
+
+      headers:{"x-apisports-key":API_KEY,"Accept":"application/json"},
+
+      cache:"no-store"
+
+    });
+
+    const data = await response.json();
+
+    if (!response.ok || data.errors?.rateLimit) {
+
+      throw new Error(data.errors?.rateLimit || data.message || "HTTP " + response.status);
+
+    }
+
+    if (data.errors && Object.keys(data.errors).length) {
+
+      throw new Error(JSON.stringify(data.errors));
+
+    }
+
+    if (!Array.isArray(data.response)) throw new Error("Unexpected API response");
+
+    fixtures = data.response;
+
+    renderFixtures();
+
+    $("connection").textContent = "API responded successfully";
+
+    $("apiInfo").textContent = "Request successful. Fixtures returned: " + fixtures.length;
+
+  } catch (err) {
+
+    $("connection").textContent = "API connection failed";
+
+    $("apiInfo").textContent = String(err.message || err);
+
+    $("matches").innerHTML = '<div class="card msg"><b>Could not load live scores.</b><p>' +
+
+      escapeHTML(err.message || err) +
+
+      '</p><p>Possible causes include API rate limits or browser cross-origin restrictions (CORS).</p></div>';
+
+  } finally {
+
+    busy = false;
+
+  }
+
+}
+
+loadFixtures();
+
+setInterval(() => {
+
+  if (document.visibilityState === "visible") loadFixtures();
+
+}, 30000);
+
+</script>
 
 </body>
 
